@@ -1,0 +1,13 @@
+<plugin
+	name="api-module"
+	package="wbs.api.module">
+
+	<layer name="api">
+		<bean class="ApiModuleSpec"/>
+		<bean class="ApiModuleBuilder"/>
+		<bean class="ApiModuleImplementation"/>
+		<bean class="ApiModuleSpecReader"/>
+		<bean class="SimpleApiBuilderContainerImplementation"/>
+	</layer>
+
+</plugin>

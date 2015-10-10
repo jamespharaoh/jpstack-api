@@ -1,0 +1,13 @@
+<plugin
+	name="api-mvc"
+	package="wbs.api.mvc">
+
+	<layer name="api">
+		<bean class="ApiErrorResponder"/>
+		<bean class="ApiExceptionHandler"/>
+		<bean class="ApiFile"/>
+		<bean class="ApiNotFoundHandler"/>
+		<bean class="WebApiManager"/>
+	</layer>
+
+</plugin>

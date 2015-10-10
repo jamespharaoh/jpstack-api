@@ -1,0 +1,18 @@
+<plugin
+	name="api-resource"
+	package="wbs.api.resource">
+
+	<layer name="api">
+		<bean class="ApiGetActionBuilder"/>
+		<bean class="ApiGetActionSpec"/>
+		<bean class="ApiPostActionBuilder"/>
+		<bean class="ApiPostActionSpec"/>
+		<bean class="ApiResource"/>
+		<bean class="ApiResourceBuilder"/>
+		<bean class="ApiResourceSpec"/>
+		<bean class="ApiVariable"/>
+		<bean class="ApiVariableBuilder"/>
+		<bean class="ApiVariableSpec"/>
+	</layer>
+
+</plugin>
