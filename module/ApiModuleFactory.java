@@ -11,6 +11,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import wbs.framework.application.context.BeanFactory;
 import wbs.framework.builder.Builder;
+import wbs.framework.builder.Builder.MissingBuilderBehaviour;
 
 @Accessors (fluent = true)
 public
@@ -45,7 +46,8 @@ class ApiModuleFactory
 		apiModuleBuilder.descend (
 			simpleContainerSpec,
 			apiModuleSpec.builders (),
-			apiModule);
+			apiModule,
+			MissingBuilderBehaviour.error);
 
 		return apiModule;
 

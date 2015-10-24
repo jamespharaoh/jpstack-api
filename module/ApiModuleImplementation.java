@@ -23,8 +23,8 @@ import lombok.experimental.Accessors;
 import org.apache.commons.lang3.tuple.Pair;
 
 import wbs.api.resource.ApiResource;
-import wbs.api.resource.ApiVariable;
 import wbs.api.resource.ApiResource.Method;
+import wbs.api.resource.ApiVariable;
 import wbs.framework.application.annotations.PrototypeComponent;
 import wbs.framework.application.context.ApplicationContext;
 import wbs.framework.data.annotations.DataChildren;

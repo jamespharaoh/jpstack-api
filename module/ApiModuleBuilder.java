@@ -64,7 +64,8 @@ class ApiModuleBuilder
 	void descend (
 			Object parentObject,
 			List<?> childObjects,
-			Object targetObject) {
+			Object targetObject,
+			MissingBuilderBehaviour missingBuilderBehaviour) {
 
 		List<Object> firstPass =
 			new ArrayList<Object> ();
@@ -82,7 +83,8 @@ class ApiModuleBuilder
 		builder.descend (
 			parentObject,
 			firstPass,
-			targetObject);
+			targetObject,
+			missingBuilderBehaviour);
 
 	}
 

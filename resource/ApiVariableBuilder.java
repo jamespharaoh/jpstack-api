@@ -11,6 +11,7 @@ import wbs.api.module.SimpleApiBuilderContainer;
 import wbs.api.module.SimpleApiBuilderContainerImplementation;
 import wbs.framework.application.annotations.PrototypeComponent;
 import wbs.framework.builder.Builder;
+import wbs.framework.builder.Builder.MissingBuilderBehaviour;
 import wbs.framework.builder.annotations.BuildMethod;
 import wbs.framework.builder.annotations.BuilderParent;
 import wbs.framework.builder.annotations.BuilderSource;
@@ -61,7 +62,8 @@ class ApiVariableBuilder {
 		builder.descend (
 			childContainer,
 			spec.builders (),
-			apiModule);
+			apiModule,
+			MissingBuilderBehaviour.error);
 
 	}
 
