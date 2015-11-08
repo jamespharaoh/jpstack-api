@@ -8,6 +8,8 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
+import lombok.NonNull;
+
 import wbs.framework.application.annotations.SingletonComponent;
 import wbs.framework.builder.Builder;
 import wbs.framework.builder.BuilderFactory;
@@ -62,10 +64,10 @@ class ApiModuleBuilder
 	@Override
 	public
 	void descend (
-			Object parentObject,
-			List<?> childObjects,
-			Object targetObject,
-			MissingBuilderBehaviour missingBuilderBehaviour) {
+			@NonNull Object parentObject,
+			@NonNull List<?> childObjects,
+			@NonNull Object targetObject,
+			@NonNull MissingBuilderBehaviour missingBuilderBehaviour) {
 
 		List<Object> firstPass =
 			new ArrayList<Object> ();

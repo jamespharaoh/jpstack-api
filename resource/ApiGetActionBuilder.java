@@ -64,7 +64,9 @@ class ApiGetActionBuilder {
 
 		RequestHandler actionRequestHandler =
 			actionRequestHandlerProvider.get ()
-				.actionName (actionBeanName);
+
+			.actionName (
+				actionBeanName);
 
 		apiModule.addRequestHandler (
 			resourceName,
