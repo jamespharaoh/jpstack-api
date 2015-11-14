@@ -8,10 +8,11 @@ import javax.inject.Provider;
 
 import lombok.NonNull;
 import lombok.experimental.Accessors;
-import wbs.framework.application.annotations.SingletonComponent;
-import wbs.framework.data.tools.DataFromXml;
 
 import com.google.common.collect.ImmutableList;
+
+import wbs.framework.application.annotations.SingletonComponent;
+import wbs.framework.data.tools.DataFromXml;
 
 @Accessors (fluent = true)
 @SingletonComponent ("apiModuleSpecReader")

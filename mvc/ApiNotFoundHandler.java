@@ -10,13 +10,13 @@ import javax.servlet.ServletException;
 
 import lombok.extern.log4j.Log4j;
 
+import com.google.common.base.Optional;
+
 import wbs.framework.application.annotations.SingletonComponent;
-import wbs.framework.exception.ExceptionLogger;
-import wbs.framework.exception.ExceptionLogger.Resolution;
 import wbs.framework.web.RequestContext;
 import wbs.framework.web.WebNotFoundHandler;
-
-import com.google.common.base.Optional;
+import wbs.platform.exception.logic.ExceptionLogger;
+import wbs.platform.exception.model.ExceptionResolution;
 
 @Log4j
 @SingletonComponent ("apiNotFoundHandler")
@@ -64,7 +64,7 @@ class ApiNotFoundHandler
 				"Not found",
 				"The specified path was not found",
 				Optional.<Integer>absent (),
-				Resolution.ignoreWithThirdPartyWarning);
+				ExceptionResolution.ignoreWithThirdPartyWarning);
 
 		} catch (RuntimeException exception) {
 

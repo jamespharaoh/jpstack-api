@@ -4,14 +4,16 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
+import lombok.NonNull;
+
 import com.google.common.base.Optional;
 
 import wbs.framework.application.annotations.SingletonComponent;
-import wbs.framework.exception.ExceptionLogger;
-import wbs.framework.exception.ExceptionLogger.Resolution;
 import wbs.framework.web.RequestContext;
 import wbs.framework.web.RequestHandler;
 import wbs.framework.web.Responder;
+import wbs.platform.exception.logic.ExceptionLogger;
+import wbs.platform.exception.model.ExceptionResolution;
 
 @SingletonComponent ("webApiManager")
 public
@@ -65,7 +67,7 @@ class WebApiManager {
 					requestContext.requestUri (),
 					exception,
 					Optional.<Integer>absent (),
-					Resolution.ignoreWithThirdPartyWarning);
+					ExceptionResolution.ignoreWithThirdPartyWarning);
 
 			}
 
@@ -81,7 +83,7 @@ class WebApiManager {
 
 	public
 	RequestHandler makeWebApiActionRequestHandler (
-			WebApiAction action) {
+			@NonNull WebApiAction action) {
 
 		return new WebApiActionRequestHandler (
 			action);
