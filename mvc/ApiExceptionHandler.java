@@ -11,13 +11,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
 import lombok.extern.log4j.Log4j;
+
+import com.google.common.base.Optional;
+
 import wbs.framework.application.annotations.SingletonComponent;
 import wbs.framework.exception.ExceptionLogger;
 import wbs.framework.exception.ExceptionLogic;
 import wbs.framework.web.RequestContext;
 import wbs.framework.web.WebExceptionHandler;
-
-import com.google.common.base.Optional;
 
 @Log4j
 @SingletonComponent ("exceptionHandler")
@@ -100,7 +101,7 @@ class ApiExceptionHandler
 					throwable),
 				stringBuilder.toString (),
 				Optional.<Integer>absent (),
-				false);
+				ExceptionLogger.Resolution.ignoreWithThirdPartyWarning);
 
 		} catch (RuntimeException exception) {
 

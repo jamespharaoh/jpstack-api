@@ -7,6 +7,7 @@ import javax.inject.Provider;
 
 import wbs.framework.application.context.ApplicationContext;
 import wbs.framework.exception.ExceptionLogger;
+import wbs.framework.exception.ExceptionLogger.Resolution;
 import wbs.framework.web.Action;
 import wbs.framework.web.RequestContext;
 import wbs.framework.web.Responder;
@@ -62,7 +63,7 @@ abstract class ApiAction
 				path,
 				exception,
 				Optional.<Integer>absent (),
-				false);
+				Resolution.ignoreWithThirdPartyWarning);
 
 			// and show a simple error page
 
