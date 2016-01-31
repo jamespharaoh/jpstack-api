@@ -15,11 +15,11 @@ import lombok.extern.log4j.Log4j;
 import com.google.common.base.Optional;
 
 import wbs.framework.application.annotations.SingletonComponent;
+import wbs.framework.exception.ExceptionLogger;
 import wbs.framework.exception.ExceptionLogic;
+import wbs.framework.exception.GenericExceptionResolution;
 import wbs.framework.web.RequestContext;
 import wbs.framework.web.WebExceptionHandler;
-import wbs.platform.exception.logic.ExceptionLogger;
-import wbs.platform.exception.model.ExceptionResolution;
 
 @Log4j
 @SingletonComponent ("exceptionHandler")
@@ -102,7 +102,7 @@ class ApiExceptionHandler
 					throwable),
 				stringBuilder.toString (),
 				Optional.<Integer>absent (),
-				ExceptionResolution.ignoreWithThirdPartyWarning);
+				GenericExceptionResolution.ignoreWithThirdPartyWarning);
 
 		} catch (RuntimeException exception) {
 

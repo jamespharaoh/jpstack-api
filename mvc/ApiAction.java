@@ -8,11 +8,11 @@ import javax.inject.Provider;
 import com.google.common.base.Optional;
 
 import wbs.framework.application.context.ApplicationContext;
+import wbs.framework.exception.ExceptionLogger;
+import wbs.framework.exception.GenericExceptionResolution;
 import wbs.framework.web.Action;
 import wbs.framework.web.RequestContext;
 import wbs.framework.web.Responder;
-import wbs.platform.exception.logic.ExceptionLogger;
-import wbs.platform.exception.model.ExceptionResolution;
 
 public
 abstract class ApiAction
@@ -63,7 +63,7 @@ abstract class ApiAction
 				path,
 				exception,
 				Optional.<Integer>absent (),
-				ExceptionResolution.ignoreWithThirdPartyWarning);
+				GenericExceptionResolution.ignoreWithThirdPartyWarning);
 
 			// and show a simple error page
 
