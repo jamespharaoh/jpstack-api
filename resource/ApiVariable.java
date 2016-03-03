@@ -1,5 +1,7 @@
 package wbs.api.resource;
 
+import static wbs.framework.utils.etc.Misc.emptyStringIfNull;
+import static wbs.framework.utils.etc.Misc.requiredValue;
 import static wbs.framework.utils.etc.Misc.stringFormat;
 
 import java.util.regex.Matcher;
@@ -10,6 +12,7 @@ import javax.inject.Provider;
 import javax.servlet.ServletException;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
@@ -48,7 +51,7 @@ class ApiVariable
 	@Override
 	public
 	WebFile processPath (
-			String localPath)
+			@NonNull String localPath)
 		throws ServletException {
 
 		// get value from path
@@ -61,7 +64,8 @@ class ApiVariable
 			throw new RuntimeException ();
 
 		String variableValue =
-			localPathMatcher.group (1);
+			requiredValue (
+				localPathMatcher.group (1));
 
 		requestContext.request (
 			variableName,
@@ -70,7 +74,8 @@ class ApiVariable
 		// continue processing request
 
 		String localPathRest =
-			localPathMatcher.group (2);
+			requiredValue (
+				localPathMatcher.group (2));
 
 		String pathNext =
 			stringFormat (
@@ -79,7 +84,8 @@ class ApiVariable
 				"/{%s}",
 				variableName,
 				"%s",
-				localPathRest);
+				emptyStringIfNull (
+					localPathRest));
 
 		DelegatingPathHandler delegatingPathHandler =
 			delegatingPathHandlerProvider.get ();
