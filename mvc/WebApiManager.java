@@ -66,7 +66,7 @@ class WebApiManager {
 					"webapi",
 					requestContext.requestUri (),
 					exception,
-					Optional.<Integer>absent (),
+					Optional.absent (),
 					GenericExceptionResolution.ignoreWithThirdPartyWarning);
 
 			}

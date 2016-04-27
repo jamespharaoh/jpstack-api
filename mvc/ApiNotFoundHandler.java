@@ -63,7 +63,7 @@ class ApiNotFoundHandler
 				path,
 				"Not found",
 				"The specified path was not found",
-				Optional.<Integer>absent (),
+				Optional.absent (),
 				GenericExceptionResolution.ignoreWithThirdPartyWarning);
 
 		} catch (RuntimeException exception) {

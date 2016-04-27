@@ -16,7 +16,7 @@ import com.google.common.base.Optional;
 
 import wbs.framework.application.annotations.SingletonComponent;
 import wbs.framework.exception.ExceptionLogger;
-import wbs.framework.exception.ExceptionLogic;
+import wbs.framework.exception.ExceptionUtils;
 import wbs.framework.exception.GenericExceptionResolution;
 import wbs.framework.web.RequestContext;
 import wbs.framework.web.WebExceptionHandler;
@@ -33,7 +33,7 @@ class ApiExceptionHandler
 	ExceptionLogger exceptionLogger;
 
 	@Inject
-	ExceptionLogic exceptionLogic;
+	ExceptionUtils exceptionLogic;
 
 	@Inject
 	RequestContext requestContext;
@@ -101,7 +101,7 @@ class ApiExceptionHandler
 				exceptionLogic.throwableSummary (
 					throwable),
 				stringBuilder.toString (),
-				Optional.<Integer>absent (),
+				Optional.absent (),
 				GenericExceptionResolution.ignoreWithThirdPartyWarning);
 
 		} catch (RuntimeException exception) {

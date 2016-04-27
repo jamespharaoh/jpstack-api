@@ -62,7 +62,7 @@ abstract class ApiAction
 				"webapi",
 				path,
 				exception,
-				Optional.<Integer>absent (),
+				Optional.absent (),
 				GenericExceptionResolution.ignoreWithThirdPartyWarning);
 
 			// and show a simple error page
