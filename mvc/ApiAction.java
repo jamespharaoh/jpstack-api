@@ -1,6 +1,6 @@
 package wbs.api.mvc;
 
-import static wbs.framework.utils.etc.Misc.joinWithoutSeparator;
+import static wbs.framework.utils.etc.StringUtils.joinWithoutSeparator;
 
 import javax.inject.Inject;
 import javax.inject.Provider;

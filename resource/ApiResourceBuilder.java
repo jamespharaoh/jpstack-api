@@ -1,6 +1,6 @@
 package wbs.api.resource;
 
-import static wbs.framework.utils.etc.Misc.joinWithSeparator;
+import static wbs.framework.utils.etc.StringUtils.joinWithSlash;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -68,8 +68,7 @@ class ApiResourceBuilder {
 	void setDefaults () {
 
 		resourceName =
-			joinWithSeparator (
-				"/",
+			joinWithSlash (
 				container.resourceName (),
 				spec.name ());
 

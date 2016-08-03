@@ -1,8 +1,8 @@
 package wbs.api.resource;
 
-import static wbs.framework.utils.etc.Misc.emptyStringIfNull;
 import static wbs.framework.utils.etc.Misc.requiredValue;
 import static wbs.framework.utils.etc.Misc.stringFormat;
+import static wbs.framework.utils.etc.StringUtils.emptyStringIfNull;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
