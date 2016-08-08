@@ -1,7 +1,7 @@
 package wbs.api.resource;
 
 import static wbs.framework.utils.etc.Misc.requiredValue;
-import static wbs.framework.utils.etc.Misc.stringFormat;
+import static wbs.framework.utils.etc.StringUtils.stringFormat;
 import static wbs.framework.utils.etc.StringUtils.emptyStringIfNull;
 
 import java.util.regex.Matcher;

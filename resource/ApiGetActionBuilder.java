@@ -1,7 +1,7 @@
 package wbs.api.resource;
 
-import static wbs.framework.utils.etc.Misc.capitalise;
 import static wbs.framework.utils.etc.Misc.ifNull;
+import static wbs.framework.utils.etc.StringUtils.capitalise;
 import static wbs.framework.utils.etc.StringUtils.joinWithoutSeparator;
 
 import javax.inject.Inject;
@@ -90,7 +90,8 @@ class ApiGetActionBuilder {
 		actionBeanName =
 			joinWithoutSeparator (
 				container.existingBeanNamePrefix (),
-				capitalise (localName),
+				capitalise (
+					localName),
 				"Action");
 
 	}
