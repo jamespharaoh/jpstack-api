@@ -1,5 +1,6 @@
 package wbs.api.mvc;
 
+import static wbs.framework.utils.etc.StringUtils.emptyStringIfNull;
 import static wbs.framework.utils.etc.StringUtils.joinWithoutSeparator;
 
 import javax.inject.Inject;
@@ -54,9 +55,8 @@ abstract class ApiAction
 			String path =
 				joinWithoutSeparator (
 					requestContext.servletPath (),
-					requestContext.pathInfo () != null
-						? requestContext.pathInfo ()
-						: "");
+					emptyStringIfNull (
+						requestContext.pathInfo ()));
 
 			exceptionLogger.logThrowable (
 				"webapi",
