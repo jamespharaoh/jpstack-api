@@ -1,7 +1,6 @@
 package wbs.api.mvc;
 
-import static wbs.framework.utils.etc.StringUtils.stringFormat;
-
+import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +9,8 @@ import javax.inject.Inject;
 import lombok.NonNull;
 
 import wbs.framework.exception.ExceptionUtils;
+import wbs.framework.utils.etc.FormatWriter;
+import wbs.framework.utils.etc.FormatWriterWriter;
 import wbs.framework.web.Action;
 import wbs.framework.web.RequestContext;
 import wbs.framework.web.Responder;
@@ -30,8 +31,13 @@ class ApiLoggingAction
 	// state
 
 	private
-	StringBuilder debugLog =
-		new StringBuilder ();
+	StringWriter debugWriter =
+		new StringWriter ();
+
+	private
+	FormatWriter debugFormatWriter =
+		new FormatWriterWriter (
+			debugWriter);
 
 	// hooks
 
@@ -40,13 +46,15 @@ class ApiLoggingAction
 			String debugLog);
 
 	protected abstract
-	void processRequest ();
+	void processRequest (
+			FormatWriter debugWriter);
 
 	protected abstract
 	void updateDatabase ();
 
 	protected abstract
-	Responder createResponse ();
+	Responder createResponse (
+			FormatWriter debugWriter);
 
 	// implementation
 
@@ -58,11 +66,13 @@ class ApiLoggingAction
 
 			logRequest ();
 
-			processRequest ();
+			processRequest (
+				debugFormatWriter);
 
 			updateDatabase ();
 
-			return createResponse ();
+			return createResponse (
+				debugFormatWriter);
 
 		} catch (RuntimeException exception) {
 
@@ -74,7 +84,7 @@ class ApiLoggingAction
 		} finally {
 
 			storeLog (
-				debugLog.toString ());
+				debugWriter.toString ());
 
 		}
 
@@ -85,11 +95,10 @@ class ApiLoggingAction
 
 		// output
 
-		debugLog.append (
-			stringFormat (
-				"%s %s\n",
-				requestContext.method (),
-				requestContext.requestUri ()));
+		debugFormatWriter.writeFormat (
+			"%s %s\n",
+			requestContext.method (),
+			requestContext.requestUri ());
 
 		// output headers
 
@@ -103,19 +112,17 @@ class ApiLoggingAction
 					: headerEntry.getValue ()
 			) {
 
-				debugLog.append (
-					stringFormat (
-						"%s = %s\n",
-						headerEntry.getKey (),
-						headerValue));
+				debugFormatWriter.writeFormat (
+					"%s = %s\n",
+					headerEntry.getKey (),
+					headerValue);
 
 			}
 
 		}
 
-		debugLog.append (
-			stringFormat (
-				"\n"));
+		debugFormatWriter.writeFormat (
+			"\n");
 
 		// output params
 
@@ -129,19 +136,17 @@ class ApiLoggingAction
 					: parameterEntry.getValue ()
 			) {
 
-				debugLog.append (
-					stringFormat (
-						"%s = %s\n",
-						parameterEntry.getKey (),
-						parameterValue));
+				debugFormatWriter.writeFormat (
+					"%s = %s\n",
+					parameterEntry.getKey (),
+					parameterValue);
 
 			}
 
 		}
 
-		debugLog.append (
-			stringFormat (
-				"\n"));
+		debugFormatWriter.writeFormat (
+			"\n");
 
 	}
 
@@ -149,16 +154,14 @@ class ApiLoggingAction
 	void logFailure (
 			@NonNull Throwable exception) {
 
-		debugLog.append (
-			stringFormat (
-				"*** THREW EXCEPTION ***\n",
-				"\n"));
+		debugFormatWriter.writeFormat (
+			"*** THREW EXCEPTION ***\n",
+			"\n");
 
-		debugLog.append (
-			stringFormat (
-				"%s\n",
-				exceptionUtils.throwableDump (
-					exception)));
+		debugFormatWriter.writeFormat (
+			"%s\n",
+			exceptionUtils.throwableDump (
+				exception));
 
 	}
 
