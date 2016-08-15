@@ -118,7 +118,7 @@ class ApiFile
 						IOException {
 
 					Responder responder = (Responder)
-						applicationContext.getBean (
+						applicationContext.getBeanRequired (
 							beanName,
 							Responder.class);
 
@@ -152,7 +152,7 @@ class ApiFile
 			Responder handle () {
 
 				Action action =
-					applicationContext.getBean (
+					applicationContext.getBeanRequired (
 						beanName,
 						Action.class);
 
