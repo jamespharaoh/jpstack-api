@@ -9,15 +9,14 @@ import javax.inject.Provider;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-
-import wbs.framework.application.context.BeanFactory;
+import wbs.framework.application.context.InitializedComponentFactory;
 import wbs.framework.builder.Builder;
 import wbs.framework.builder.Builder.MissingBuilderBehaviour;
 
 @Accessors (fluent = true)
 public
 class ApiModuleFactory
-	implements BeanFactory {
+	implements InitializedComponentFactory {
 
 	// dependencies
 
@@ -28,7 +27,7 @@ class ApiModuleFactory
 	// prototype dependencies
 
 	@Inject
-	Provider<ApiModuleImplementation> apiModuleImplementationProvider;
+	Provider <ApiModuleImplementation> apiModuleImplementationProvider;
 
 	// properties
 
@@ -39,7 +38,7 @@ class ApiModuleFactory
 
 	@Override
 	public
-	Object instantiate () {
+	Object makeComponent () {
 
 		ApiModuleImplementation apiModule =
 			apiModuleImplementationProvider.get ();

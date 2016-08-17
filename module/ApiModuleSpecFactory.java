@@ -7,13 +7,12 @@ import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-
-import wbs.framework.application.context.BeanFactory;
+import wbs.framework.application.context.InitializedComponentFactory;
 
 @Accessors (fluent = true)
 public
 class ApiModuleSpecFactory
-	implements BeanFactory {
+	implements InitializedComponentFactory {
 
 	// dependencies
 
@@ -29,7 +28,7 @@ class ApiModuleSpecFactory
 
 	@Override
 	public
-	Object instantiate () {
+	Object makeComponent () {
 
 		try {
 
