@@ -1,0 +1,10 @@
+<plugin
+	name="api-misc"
+	package="wbs.api.misc">
+
+	<layer name="api">
+		<bean class="ApiExceptionHandler"/>
+		<bean class="ApiMiscComponents"/>
+	</layer>
+
+</plugin>

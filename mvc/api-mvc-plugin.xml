@@ -4,7 +4,6 @@
 
 	<layer name="api">
 		<bean class="ApiErrorResponder"/>
-		<bean class="ApiExceptionHandler"/>
 		<bean class="ApiFile"/>
 		<bean class="ApiNotFoundHandler"/>
 		<bean class="WebApiManager"/>

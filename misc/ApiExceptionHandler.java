@@ -1,4 +1,4 @@
-package wbs.api.mvc;
+package wbs.api.misc;
 
 import static wbs.framework.utils.etc.StringUtils.stringFormat;
 

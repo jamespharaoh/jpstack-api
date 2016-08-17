@@ -85,7 +85,7 @@ abstract class ApiAction
 			public
 			Responder get () {
 
-				return applicationContext.getBeanRequired (
+				return applicationContext.getComponentRequired (
 					name,
 					Responder.class);
 

@@ -7,12 +7,12 @@ import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import wbs.framework.application.context.InitializedComponentFactory;
+import wbs.framework.application.context.ComponentFactory;
 
 @Accessors (fluent = true)
 public
 class ApiModuleSpecFactory
-	implements InitializedComponentFactory {
+	implements ComponentFactory {
 
 	// dependencies
 

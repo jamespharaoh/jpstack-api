@@ -9,14 +9,14 @@ import javax.inject.Provider;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import wbs.framework.application.context.InitializedComponentFactory;
+import wbs.framework.application.context.ComponentFactory;
 import wbs.framework.builder.Builder;
 import wbs.framework.builder.Builder.MissingBuilderBehaviour;
 
 @Accessors (fluent = true)
 public
 class ApiModuleFactory
-	implements InitializedComponentFactory {
+	implements ComponentFactory {
 
 	// dependencies
 

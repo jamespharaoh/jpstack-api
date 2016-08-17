@@ -16,12 +16,11 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-
-import org.apache.commons.lang3.tuple.Pair;
-
 import wbs.api.resource.ApiResource;
 import wbs.api.resource.ApiResource.Method;
 import wbs.api.resource.ApiVariable;
@@ -35,7 +34,7 @@ import wbs.framework.web.WebFile;
 
 @Accessors (fluent = true)
 @DataClass ("api-module")
-@PrototypeComponent ("apiModuleImpl")
+@PrototypeComponent ("apiModuleImplementation")
 public
 class ApiModuleImplementation
 	implements ApiModule {
@@ -77,11 +76,14 @@ class ApiModuleImplementation
 		new HashMap<String,String> ();
 
 	// lifecycle
+public
+Boolean init = false;
 
 	@PostConstruct
 	public
 	void init () {
 
+init = true;
 		// create files from terminal resource names
 
 		List<String> terminalResourceNamesList =
