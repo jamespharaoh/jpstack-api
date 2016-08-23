@@ -3,8 +3,8 @@
 	package="wbs.api.misc">
 
 	<layer name="api">
-		<bean class="ApiExceptionHandler"/>
-		<bean class="ApiMiscComponents"/>
+		<component class="ApiExceptionHandler"/>
+		<component class="ApiMiscComponents"/>
 	</layer>
 
 </plugin>

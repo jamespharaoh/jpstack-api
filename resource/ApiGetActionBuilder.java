@@ -1,6 +1,6 @@
 package wbs.api.resource;
 
-import static wbs.framework.utils.etc.Misc.ifNull;
+import static wbs.framework.utils.etc.NullUtils.ifNull;
 import static wbs.framework.utils.etc.StringUtils.capitalise;
 import static wbs.framework.utils.etc.StringUtils.joinWithoutSeparator;
 

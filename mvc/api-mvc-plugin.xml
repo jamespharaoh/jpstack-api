@@ -3,10 +3,10 @@
 	package="wbs.api.mvc">
 
 	<layer name="api">
-		<bean class="ApiErrorResponder"/>
-		<bean class="ApiFile"/>
-		<bean class="ApiNotFoundHandler"/>
-		<bean class="WebApiManager"/>
+		<component class="ApiErrorResponder"/>
+		<component class="ApiFile"/>
+		<component class="ApiNotFoundHandler"/>
+		<component class="WebApiManager"/>
 	</layer>
 
 </plugin>

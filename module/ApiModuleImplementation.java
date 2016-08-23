@@ -1,7 +1,7 @@
 package wbs.api.module;
 
-import static wbs.framework.utils.etc.Misc.notEqual;
 import static wbs.framework.utils.etc.StringUtils.stringFormat;
+import static wbs.framework.utils.etc.StringUtils.stringNotEqualSafe;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -213,7 +213,7 @@ init = true;
 					resourceName);
 
 			if (
-				notEqual (
+				stringNotEqualSafe (
 					variableName,
 					existingVariableName)
 			) {

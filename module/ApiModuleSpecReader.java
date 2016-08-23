@@ -8,11 +8,9 @@ import javax.inject.Provider;
 
 import lombok.NonNull;
 import lombok.experimental.Accessors;
-
-import com.google.common.collect.ImmutableList;
-
 import wbs.framework.application.annotations.SingletonComponent;
 import wbs.framework.data.tools.DataFromXml;
+import wbs.framework.data.tools.DataFromXmlBuilder;
 
 @Accessors (fluent = true)
 @SingletonComponent ("apiModuleSpecReader")
@@ -35,19 +33,22 @@ class ApiModuleSpecReader {
 	public
 	void init () {
 
-		dataFromXml =
-			new DataFromXml ();
+		DataFromXmlBuilder builder =
+			new DataFromXmlBuilder ();
 
 		for (
 			Map.Entry<Class<?>,Provider<ApiModuleSpec>> entry
 				: apiModuleSpecProviders.entrySet ()
 		) {
 
-			dataFromXml.registerBuilder (
+			builder.registerBuilder (
 				entry.getKey (),
 				entry.getValue ());
 
 		}
+
+		dataFromXml =
+			builder.build ();
 
 	}
 
@@ -60,7 +61,6 @@ class ApiModuleSpecReader {
 		ApiModuleSpec apiModuleSpec =
 			(ApiModuleSpec)
 			dataFromXml.readClasspath (
-				ImmutableList.of (),
 				xmlResourceName);
 
 		return apiModuleSpec;
