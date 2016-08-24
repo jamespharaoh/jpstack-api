@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-
 import wbs.framework.application.annotations.PrototypeComponent;
 import wbs.framework.data.annotations.DataAttribute;
 import wbs.framework.data.annotations.DataChildren;
@@ -29,7 +28,7 @@ class ApiModuleSpec {
 
 	@DataChildren (
 		direct = true)
-	List<Object> builders =
-		new ArrayList<Object> ();
+	List <Object> builders =
+		new ArrayList<> ();
 
 }

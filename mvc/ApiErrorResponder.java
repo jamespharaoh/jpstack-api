@@ -3,9 +3,8 @@ package wbs.api.mvc;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.inject.Inject;
-
 import wbs.framework.application.annotations.PrototypeComponent;
+import wbs.framework.application.annotations.SingletonDependency;
 import wbs.framework.web.RequestContext;
 import wbs.framework.web.Responder;
 
@@ -16,7 +15,7 @@ class ApiErrorResponder
 
 	// dependencies
 
-	@Inject
+	@SingletonDependency
 	RequestContext requestContext;
 
 	// implementation

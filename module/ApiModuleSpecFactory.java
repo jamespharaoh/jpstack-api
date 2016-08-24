@@ -2,11 +2,10 @@ package wbs.api.module;
 
 import static wbs.framework.utils.etc.StringUtils.stringFormat;
 
-import javax.inject.Inject;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import wbs.framework.application.annotations.SingletonDependency;
 import wbs.framework.application.context.ComponentFactory;
 
 @Accessors (fluent = true)
@@ -16,7 +15,7 @@ class ApiModuleSpecFactory
 
 	// dependencies
 
-	@Inject
+	@SingletonDependency
 	ApiModuleSpecReader apiSpecReader;
 
 	// properties

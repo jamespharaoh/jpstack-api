@@ -5,11 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 import javax.inject.Provider;
 
 import lombok.NonNull;
-
+import wbs.framework.application.annotations.PrototypeDependency;
 import wbs.framework.application.annotations.SingletonComponent;
 import wbs.framework.builder.Builder;
 import wbs.framework.builder.BuilderFactory;
@@ -21,14 +20,14 @@ class ApiModuleBuilder
 
 	// prototype dependencies
 
-	@Inject
-	Provider<BuilderFactory> builderFactoryProvider;
+	@PrototypeDependency
+	Provider <BuilderFactory> builderFactoryProvider;
 
 	// collection dependencies
 
-	@Inject
+	@PrototypeDependency
 	@ApiModuleBuilderHandler
-	Map<Class<?>,Provider<Object>> apiModuleBuilders;
+	Map <Class <?>, Provider <Object>> apiModuleBuilders;
 
 	// state
 
@@ -44,7 +43,7 @@ class ApiModuleBuilder
 			builderFactoryProvider.get ();
 
 		for (
-			Map.Entry<Class<?>,Provider<Object>> entry
+			Map.Entry <Class <?>, Provider <Object>> entry
 				: apiModuleBuilders.entrySet ()
 		) {
 
@@ -65,12 +64,12 @@ class ApiModuleBuilder
 	public
 	void descend (
 			@NonNull Object parentObject,
-			@NonNull List<?> childObjects,
+			@NonNull List <?> childObjects,
 			@NonNull Object targetObject,
 			@NonNull MissingBuilderBehaviour missingBuilderBehaviour) {
 
-		List<Object> firstPass =
-			new ArrayList<Object> ();
+		List <Object> firstPass =
+			new ArrayList<> ();
 
 		for (
 			Object childObject

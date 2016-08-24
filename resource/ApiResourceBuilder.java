@@ -2,7 +2,6 @@ package wbs.api.resource;
 
 import static wbs.framework.utils.etc.StringUtils.joinWithSlash;
 
-import javax.inject.Inject;
 import javax.inject.Provider;
 
 import wbs.api.module.ApiModuleBuilderHandler;
@@ -10,6 +9,7 @@ import wbs.api.module.ApiModuleImplementation;
 import wbs.api.module.SimpleApiBuilderContainer;
 import wbs.api.module.SimpleApiBuilderContainerImplementation;
 import wbs.framework.application.annotations.PrototypeComponent;
+import wbs.framework.application.annotations.PrototypeDependency;
 import wbs.framework.builder.Builder;
 import wbs.framework.builder.Builder.MissingBuilderBehaviour;
 import wbs.framework.builder.annotations.BuildMethod;
@@ -24,8 +24,8 @@ class ApiResourceBuilder {
 
 	// prototype dependencies
 
-	@Inject
-	Provider<SimpleApiBuilderContainerImplementation>
+	@PrototypeDependency
+	Provider <SimpleApiBuilderContainerImplementation>
 	simpleApiBuilderContainerImplementation;
 
 	// builder

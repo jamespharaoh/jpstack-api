@@ -3,11 +3,12 @@ package wbs.api.mvc;
 import static wbs.framework.utils.etc.StringUtils.emptyStringIfNull;
 import static wbs.framework.utils.etc.StringUtils.joinWithoutSeparator;
 
-import javax.inject.Inject;
 import javax.inject.Provider;
 
 import com.google.common.base.Optional;
 
+import wbs.framework.application.annotations.PrototypeDependency;
+import wbs.framework.application.annotations.SingletonDependency;
 import wbs.framework.application.context.ApplicationContext;
 import wbs.framework.exception.ExceptionLogger;
 import wbs.framework.exception.GenericExceptionResolution;
@@ -19,19 +20,21 @@ public
 abstract class ApiAction
 	implements Action {
 
-	// dependencies
+	// singleton dependencies
 
-	@Inject
+	@SingletonDependency
 	ApplicationContext applicationContext;
 
-	@Inject
+	@SingletonDependency
 	ExceptionLogger exceptionLogger;
 
-	@Inject
+	@SingletonDependency
 	RequestContext requestContext;
 
-	@Inject
-	Provider<ApiErrorResponder> apiErrorResponder;
+	// prototype dependencies
+
+	@PrototypeDependency
+	Provider <ApiErrorResponder> apiErrorResponder;
 
 	// hooks
 

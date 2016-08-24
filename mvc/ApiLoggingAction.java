@@ -4,10 +4,8 @@ import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-
 import lombok.NonNull;
-
+import wbs.framework.application.annotations.SingletonDependency;
 import wbs.framework.exception.ExceptionUtils;
 import wbs.framework.utils.etc.FormatWriter;
 import wbs.framework.utils.etc.FormatWriterWriter;
@@ -21,10 +19,10 @@ class ApiLoggingAction
 
 	// dependencies
 
-	@Inject
+	@SingletonDependency
 	ExceptionUtils exceptionUtils;
 
-	@Inject
+	@SingletonDependency
 	protected
 	RequestContext requestContext;
 

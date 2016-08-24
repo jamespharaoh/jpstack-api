@@ -3,11 +3,11 @@ package wbs.api.module;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 import javax.inject.Provider;
 
 import lombok.NonNull;
 import lombok.experimental.Accessors;
+import wbs.framework.application.annotations.PrototypeDependency;
 import wbs.framework.application.annotations.SingletonComponent;
 import wbs.framework.data.tools.DataFromXml;
 import wbs.framework.data.tools.DataFromXmlBuilder;
@@ -19,9 +19,9 @@ class ApiModuleSpecReader {
 
 	// collection dependencies
 
-	@Inject
+	@PrototypeDependency
 	@ApiModuleData
-	Map<Class<?>,Provider<ApiModuleSpec>> apiModuleSpecProviders;
+	Map <Class <?>, Provider <ApiModuleSpec>> apiModuleSpecProviders;
 
 	// state
 
@@ -37,7 +37,7 @@ class ApiModuleSpecReader {
 			new DataFromXmlBuilder ();
 
 		for (
-			Map.Entry<Class<?>,Provider<ApiModuleSpec>> entry
+			Map.Entry <Class <?>, Provider <ApiModuleSpec>> entry
 				: apiModuleSpecProviders.entrySet ()
 		) {
 

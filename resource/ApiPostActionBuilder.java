@@ -4,7 +4,6 @@ import static wbs.framework.utils.etc.NullUtils.ifNull;
 import static wbs.framework.utils.etc.StringUtils.capitalise;
 import static wbs.framework.utils.etc.StringUtils.joinWithoutSeparator;
 
-import javax.inject.Inject;
 import javax.inject.Provider;
 
 import wbs.api.module.ApiModuleBuilderHandler;
@@ -12,6 +11,8 @@ import wbs.api.module.ApiModuleImplementation;
 import wbs.api.module.SimpleApiBuilderContainer;
 import wbs.api.resource.ApiResource.Method;
 import wbs.framework.application.annotations.PrototypeComponent;
+import wbs.framework.application.annotations.PrototypeDependency;
+import wbs.framework.application.annotations.SingletonDependency;
 import wbs.framework.application.context.ApplicationContext;
 import wbs.framework.builder.Builder;
 import wbs.framework.builder.annotations.BuildMethod;
@@ -28,13 +29,13 @@ class ApiPostActionBuilder {
 
 	// dependencies
 
-	@Inject
+	@SingletonDependency
 	ApplicationContext applicationContext;
 
 	// prototype dependencies
 
-	@Inject
-	Provider<ActionRequestHandler> actionRequestHandlerProvider;
+	@PrototypeDependency
+	Provider <ActionRequestHandler> actionRequestHandlerProvider;
 
 	// builder
 

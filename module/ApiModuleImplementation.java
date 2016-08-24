@@ -13,18 +13,22 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 import javax.inject.Provider;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.google.common.collect.ImmutableMap;
+
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import wbs.api.resource.ApiResource;
 import wbs.api.resource.ApiResource.Method;
 import wbs.api.resource.ApiVariable;
 import wbs.framework.application.annotations.PrototypeComponent;
+import wbs.framework.application.annotations.PrototypeDependency;
+import wbs.framework.application.annotations.SingletonDependency;
 import wbs.framework.application.context.ApplicationContext;
 import wbs.framework.data.annotations.DataChildren;
 import wbs.framework.data.annotations.DataClass;
@@ -41,53 +45,50 @@ class ApiModuleImplementation
 
 	// dependencies
 
-	@Inject
+	@SingletonDependency
 	ApplicationContext applicationContext;
 
 	// prototype dependencies
 
-	@Inject
-	Provider<ApiResource> apiResourceProvider;
+	@PrototypeDependency
+	Provider <ApiResource> apiResourceProvider;
 
-	@Inject
-	Provider<ApiVariable> apiVariableProvider;
+	@PrototypeDependency
+	Provider <ApiVariable> apiVariableProvider;
 
 	// properties
 
 	@DataChildren
 	@Getter @Setter
-	Map<String,WebFile> files =
-		new LinkedHashMap<String,WebFile> ();
+	Map <String, WebFile> files =
+		new LinkedHashMap<> ();
 
 	@DataChildren
 	@Getter @Setter
-	Map<String,PathHandler> paths =
-		new LinkedHashMap<String,PathHandler> ();
+	Map <String, PathHandler> paths =
+		new LinkedHashMap<> ();
 
 	// state
 
-	Set<String> terminalResourceNames =
-		new HashSet<String> ();
+	Set <String> terminalResourceNames =
+		new HashSet<> ();
 
-	Map<Pair<String,Method>,RequestHandler> requestHandlers =
-		new HashMap<Pair<String,Method>,RequestHandler> ();
+	Map <Pair <String, Method>, RequestHandler> requestHandlers =
+		new HashMap<> ();
 
-	Map<String,String> variableResources =
-		new HashMap<String,String> ();
+	Map <String, String> variableResources =
+		new HashMap<> ();
 
 	// lifecycle
-public
-Boolean init = false;
 
 	@PostConstruct
 	public
 	void init () {
 
-init = true;
 		// create files from terminal resource names
 
-		List<String> terminalResourceNamesList =
-			new ArrayList<String> (
+		List <String> terminalResourceNamesList =
+			new ArrayList<> (
 				terminalResourceNames);
 
 		Collections.sort (
@@ -106,7 +107,7 @@ init = true;
 					: Method.values ()
 			) {
 
-				Pair<String,Method> key =
+				Pair <String, Method> key =
 					Pair.of (
 						terminalResourceName,
 						method);
@@ -132,8 +133,8 @@ init = true;
 
 		// create path handlers from variable resources
 
-		List<String> variableResourceNamesList =
-			new ArrayList<String> (
+		List <String> variableResourceNamesList =
+			new ArrayList<> (
 				variableResources.keySet ());
 
 		Collections.sort (
@@ -163,17 +164,27 @@ init = true;
 
 		}
 
+		// freeze mutable properties
+
+		files =
+			ImmutableMap.copyOf (
+				files);
+
+		paths =
+			ImmutableMap.copyOf (
+				paths);
+
 	}
 
 	// implementation
 
 	public
 	void addRequestHandler (
-			String resourceName,
-			Method method,
-			RequestHandler requestHandler) {
+			@NonNull String resourceName,
+			@NonNull Method method,
+			@NonNull RequestHandler requestHandler) {
 
-		Pair<String,Method> key =
+		Pair <String, Method> key =
 			Pair.of (
 				resourceName,
 				method);
@@ -200,8 +211,8 @@ init = true;
 
 	public
 	void addVariable (
-			String resourceName,
-			String variableName) {
+			@NonNull String resourceName,
+			@NonNull String variableName) {
 
 		if (
 			variableResources.containsKey (

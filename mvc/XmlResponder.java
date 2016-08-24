@@ -2,23 +2,23 @@ package wbs.api.mvc;
 
 import java.io.IOException;
 
-import javax.inject.Inject;
 import javax.inject.Provider;
 
 import org.jdom2.Document;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
+import wbs.framework.application.annotations.SingletonDependency;
 import wbs.framework.web.RequestContext;
 import wbs.framework.web.Responder;
 
 public
 class XmlResponder
 	implements
-		Provider<Responder>,
+		Provider <Responder>,
 		Responder {
 
-	@Inject
+	@SingletonDependency
 	RequestContext requestContext;
 
 	private final

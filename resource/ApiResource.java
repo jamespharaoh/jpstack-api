@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
@@ -12,8 +11,8 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-
 import wbs.framework.application.annotations.PrototypeComponent;
+import wbs.framework.application.annotations.SingletonDependency;
 import wbs.framework.web.RequestContext;
 import wbs.framework.web.RequestHandler;
 import wbs.framework.web.WebFile;
@@ -26,14 +25,14 @@ class ApiResource
 
 	// dependencies
 
-	@Inject
+	@SingletonDependency
 	RequestContext requestContext;
 
 	// properties
 
 	@Getter @Setter
-	Map<Method,RequestHandler> requestHandlers =
-		new HashMap<Method,RequestHandler> ();
+	Map <Method, RequestHandler> requestHandlers =
+		new HashMap<> ();
 
 	// implementation
 

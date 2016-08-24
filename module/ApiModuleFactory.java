@@ -2,13 +2,14 @@ package wbs.api.module;
 
 import static wbs.framework.utils.etc.StringUtils.hyphenToCamel;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Provider;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import wbs.framework.application.annotations.SingletonDependency;
+import wbs.framework.application.annotations.UninitializedDependency;
 import wbs.framework.application.context.ComponentFactory;
 import wbs.framework.builder.Builder;
 import wbs.framework.builder.Builder.MissingBuilderBehaviour;
@@ -20,13 +21,13 @@ class ApiModuleFactory
 
 	// dependencies
 
-	@Inject
+	@SingletonDependency
 	@Named
 	Builder apiModuleBuilder;
 
-	// prototype dependencies
+	// unitialized dependencies
 
-	@Inject
+	@UninitializedDependency
 	Provider <ApiModuleImplementation> apiModuleImplementationProvider;
 
 	// properties

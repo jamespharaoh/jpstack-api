@@ -1,13 +1,12 @@
 package wbs.api.resource;
 
 import static wbs.framework.utils.etc.Misc.requiredValue;
-import static wbs.framework.utils.etc.StringUtils.stringFormat;
 import static wbs.framework.utils.etc.StringUtils.emptyStringIfNull;
+import static wbs.framework.utils.etc.StringUtils.stringFormat;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.servlet.ServletException;
 
@@ -15,8 +14,8 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-
 import wbs.framework.application.annotations.PrototypeComponent;
+import wbs.framework.application.annotations.SingletonDependency;
 import wbs.framework.web.DelegatingPathHandler;
 import wbs.framework.web.PathHandler;
 import wbs.framework.web.RequestContext;
@@ -30,13 +29,13 @@ class ApiVariable
 
 	// dependencies
 
-	@Inject
+	@SingletonDependency
 	RequestContext requestContext;
 
 	// indirect dependencies
 
-	@Inject
-	Provider<DelegatingPathHandler> delegatingPathHandlerProvider;
+	@SingletonDependency
+	Provider <DelegatingPathHandler> delegatingPathHandlerProvider;
 
 	// properties
 

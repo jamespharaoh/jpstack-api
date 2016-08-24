@@ -4,15 +4,15 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.servlet.ServletException;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-
 import wbs.framework.application.annotations.PrototypeComponent;
+import wbs.framework.application.annotations.PrototypeDependency;
+import wbs.framework.application.annotations.SingletonDependency;
 import wbs.framework.application.context.ApplicationContext;
 import wbs.framework.web.AbstractFile;
 import wbs.framework.web.Action;
@@ -27,18 +27,18 @@ public
 class ApiFile
 	extends AbstractFile {
 
-	// dependencies
+	// singleton dependencies
 
-	@Inject
+	@SingletonDependency
 	ApplicationContext applicationContext;
 
-	@Inject
+	@SingletonDependency
 	WebApiManager webApiManager;
 
 	// prototype dependencies
 
-	@Inject
-	Provider<ActionRequestHandler> actionRequestHandlerProvider;
+	@PrototypeDependency
+	Provider <ActionRequestHandler> actionRequestHandlerProvider;
 
 	// properties
 
@@ -49,8 +49,8 @@ class ApiFile
 	RequestHandler postHandler;
 
 	@Getter @Setter
-	Map<String,Object> requestParams =
-		new LinkedHashMap<String,Object> ();
+	Map <String, Object> requestParams =
+		new LinkedHashMap<> ();
 
 	// utilities
 

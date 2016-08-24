@@ -5,14 +5,13 @@ import static wbs.framework.utils.etc.StringUtils.stringFormat;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.inject.Inject;
 import javax.servlet.ServletException;
-
-import lombok.extern.log4j.Log4j;
 
 import com.google.common.base.Optional;
 
+import lombok.extern.log4j.Log4j;
 import wbs.framework.application.annotations.SingletonComponent;
+import wbs.framework.application.annotations.SingletonDependency;
 import wbs.framework.exception.ExceptionLogger;
 import wbs.framework.exception.GenericExceptionResolution;
 import wbs.framework.web.RequestContext;
@@ -24,12 +23,12 @@ public
 class ApiNotFoundHandler
 	implements WebNotFoundHandler {
 
-	// dependencies
+	// singleton dependencies
 
-	@Inject
+	@SingletonDependency
 	ExceptionLogger exceptionLogger;
 
-	@Inject
+	@SingletonDependency
 	RequestContext requestContext;
 
 	// implementation
