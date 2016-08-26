@@ -7,8 +7,8 @@ import java.util.Map;
 import lombok.NonNull;
 import wbs.framework.application.annotations.SingletonDependency;
 import wbs.framework.exception.ExceptionUtils;
-import wbs.framework.utils.etc.FormatWriter;
-import wbs.framework.utils.etc.FormatWriterWriter;
+import wbs.framework.utils.formatwriter.FormatWriter;
+import wbs.framework.utils.formatwriter.WriterFormatWriter;
 import wbs.framework.web.Action;
 import wbs.framework.web.RequestContext;
 import wbs.framework.web.Responder;
@@ -34,7 +34,7 @@ class ApiLoggingAction
 
 	private
 	FormatWriter debugFormatWriter =
-		new FormatWriterWriter (
+		new WriterFormatWriter (
 			debugWriter);
 
 	// hooks
