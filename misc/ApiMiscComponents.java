@@ -11,7 +11,7 @@ import wbs.framework.web.DelegatingPathHandler;
 import wbs.framework.web.PathHandler;
 
 @SingletonComponent ("apiMiscComponents")
-public 
+public
 class ApiMiscComponents {
 
 	// unitialized dependencies

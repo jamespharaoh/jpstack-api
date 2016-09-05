@@ -24,7 +24,7 @@ class ApiVariableBuilder {
 
 	// prototype dependencies
 
-	@PrototypeDependency 
+	@PrototypeDependency
 	Provider <SimpleApiBuilderContainerImplementation>
 	simpleApiBuilderContainerImplementation;
 
