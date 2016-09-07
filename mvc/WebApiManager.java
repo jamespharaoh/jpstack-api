@@ -5,8 +5,9 @@ import java.io.IOException;
 import com.google.common.base.Optional;
 
 import lombok.NonNull;
-import wbs.framework.application.annotations.SingletonComponent;
-import wbs.framework.application.annotations.SingletonDependency;
+
+import wbs.framework.component.annotations.SingletonComponent;
+import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.exception.ExceptionLogger;
 import wbs.framework.exception.GenericExceptionResolution;
 import wbs.framework.web.RequestContext;

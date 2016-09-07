@@ -8,11 +8,12 @@ import javax.inject.Provider;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import wbs.framework.application.annotations.SingletonDependency;
-import wbs.framework.application.annotations.UninitializedDependency;
-import wbs.framework.application.context.ComponentFactory;
+
 import wbs.framework.builder.Builder;
 import wbs.framework.builder.Builder.MissingBuilderBehaviour;
+import wbs.framework.component.annotations.SingletonDependency;
+import wbs.framework.component.annotations.UninitializedDependency;
+import wbs.framework.component.tools.ComponentFactory;
 
 @Accessors (fluent = true)
 public

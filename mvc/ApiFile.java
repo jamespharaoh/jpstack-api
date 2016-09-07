@@ -10,10 +10,11 @@ import javax.servlet.ServletException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import wbs.framework.application.annotations.PrototypeComponent;
-import wbs.framework.application.annotations.PrototypeDependency;
-import wbs.framework.application.annotations.SingletonDependency;
-import wbs.framework.application.context.ApplicationContext;
+
+import wbs.framework.component.annotations.PrototypeComponent;
+import wbs.framework.component.annotations.PrototypeDependency;
+import wbs.framework.component.annotations.SingletonDependency;
+import wbs.framework.component.manager.ComponentManager;
 import wbs.framework.web.AbstractFile;
 import wbs.framework.web.Action;
 import wbs.framework.web.ActionRequestHandler;
@@ -30,7 +31,7 @@ class ApiFile
 	// singleton dependencies
 
 	@SingletonDependency
-	ApplicationContext applicationContext;
+	ComponentManager componentManager;
 
 	@SingletonDependency
 	WebApiManager webApiManager;
@@ -118,7 +119,7 @@ class ApiFile
 						IOException {
 
 					Responder responder = (Responder)
-						applicationContext.getComponentRequired (
+						componentManager.getComponentRequired (
 							beanName,
 							Responder.class);
 
@@ -152,7 +153,7 @@ class ApiFile
 			Responder handle () {
 
 				Action action =
-					applicationContext.getComponentRequired (
+					componentManager.getComponentRequired (
 						beanName,
 						Action.class);
 

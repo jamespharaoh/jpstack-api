@@ -7,8 +7,9 @@ import javax.inject.Provider;
 
 import lombok.NonNull;
 import lombok.experimental.Accessors;
-import wbs.framework.application.annotations.PrototypeDependency;
-import wbs.framework.application.annotations.SingletonComponent;
+
+import wbs.framework.component.annotations.PrototypeDependency;
+import wbs.framework.component.annotations.SingletonComponent;
 import wbs.framework.data.tools.DataFromXml;
 import wbs.framework.data.tools.DataFromXmlBuilder;
 

@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import lombok.NonNull;
-import wbs.framework.application.annotations.SingletonDependency;
+
+import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.exception.ExceptionUtils;
 import wbs.framework.utils.formatwriter.FormatWriter;
 import wbs.framework.utils.formatwriter.WriterFormatWriter;

@@ -7,9 +7,9 @@ import javax.inject.Provider;
 
 import com.google.common.base.Optional;
 
-import wbs.framework.application.annotations.PrototypeDependency;
-import wbs.framework.application.annotations.SingletonDependency;
-import wbs.framework.application.context.ApplicationContext;
+import wbs.framework.component.annotations.PrototypeDependency;
+import wbs.framework.component.annotations.SingletonDependency;
+import wbs.framework.component.manager.ComponentManager;
 import wbs.framework.exception.ExceptionLogger;
 import wbs.framework.exception.GenericExceptionResolution;
 import wbs.framework.web.Action;
@@ -23,7 +23,7 @@ abstract class ApiAction
 	// singleton dependencies
 
 	@SingletonDependency
-	ApplicationContext applicationContext;
+	ComponentManager componentManager;
 
 	@SingletonDependency
 	ExceptionLogger exceptionLogger;
@@ -88,7 +88,7 @@ abstract class ApiAction
 			public
 			Responder get () {
 
-				return applicationContext.getComponentRequired (
+				return componentManager.getComponentRequired (
 					name,
 					Responder.class);
 

@@ -8,7 +8,7 @@ import org.jdom2.Document;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
-import wbs.framework.application.annotations.SingletonDependency;
+import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.web.RequestContext;
 import wbs.framework.web.Responder;
 

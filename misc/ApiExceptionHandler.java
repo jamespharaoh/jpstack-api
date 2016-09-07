@@ -12,8 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.common.base.Optional;
 
 import lombok.extern.log4j.Log4j;
-import wbs.framework.application.annotations.SingletonComponent;
-import wbs.framework.application.annotations.SingletonDependency;
+
+import wbs.framework.component.annotations.SingletonComponent;
+import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.exception.ExceptionLogger;
 import wbs.framework.exception.ExceptionUtils;
 import wbs.framework.exception.GenericExceptionResolution;

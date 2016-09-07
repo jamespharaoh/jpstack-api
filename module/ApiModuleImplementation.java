@@ -26,10 +26,10 @@ import lombok.experimental.Accessors;
 import wbs.api.resource.ApiResource;
 import wbs.api.resource.ApiResource.Method;
 import wbs.api.resource.ApiVariable;
-import wbs.framework.application.annotations.PrototypeComponent;
-import wbs.framework.application.annotations.PrototypeDependency;
-import wbs.framework.application.annotations.SingletonDependency;
-import wbs.framework.application.context.ApplicationContext;
+import wbs.framework.component.annotations.PrototypeComponent;
+import wbs.framework.component.annotations.PrototypeDependency;
+import wbs.framework.component.annotations.SingletonDependency;
+import wbs.framework.component.manager.ComponentManager;
 import wbs.framework.data.annotations.DataChildren;
 import wbs.framework.data.annotations.DataClass;
 import wbs.framework.web.PathHandler;
@@ -46,7 +46,7 @@ class ApiModuleImplementation
 	// dependencies
 
 	@SingletonDependency
-	ApplicationContext applicationContext;
+	ComponentManager componentManager;
 
 	// prototype dependencies
 

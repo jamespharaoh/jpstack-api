@@ -6,7 +6,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import wbs.api.module.ApiModuleData;
-import wbs.framework.application.annotations.PrototypeComponent;
+import wbs.framework.component.annotations.PrototypeComponent;
 import wbs.framework.data.annotations.DataAttribute;
 import wbs.framework.data.annotations.DataClass;
 

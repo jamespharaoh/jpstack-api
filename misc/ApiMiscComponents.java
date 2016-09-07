@@ -3,8 +3,8 @@ package wbs.api.misc;
 import javax.inject.Named;
 import javax.inject.Provider;
 
-import wbs.framework.application.annotations.SingletonComponent;
-import wbs.framework.application.annotations.UninitializedDependency;
+import wbs.framework.component.annotations.SingletonComponent;
+import wbs.framework.component.annotations.UninitializedDependency;
 import wbs.framework.utils.ThreadManager;
 import wbs.framework.utils.ThreadManagerImplementation;
 import wbs.framework.web.DelegatingPathHandler;

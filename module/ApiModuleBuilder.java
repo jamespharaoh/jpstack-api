@@ -8,10 +8,11 @@ import javax.annotation.PostConstruct;
 import javax.inject.Provider;
 
 import lombok.NonNull;
-import wbs.framework.application.annotations.PrototypeDependency;
-import wbs.framework.application.annotations.SingletonComponent;
+
 import wbs.framework.builder.Builder;
 import wbs.framework.builder.BuilderFactory;
+import wbs.framework.component.annotations.PrototypeDependency;
+import wbs.framework.component.annotations.SingletonComponent;
 
 @SingletonComponent ("apiModuleBuilder")
 public
