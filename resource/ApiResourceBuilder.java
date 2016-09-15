@@ -1,6 +1,6 @@
 package wbs.api.resource;
 
-import static wbs.framework.utils.etc.StringUtils.joinWithSlash;
+import static wbs.utils.string.StringUtils.joinWithSlash;
 
 import javax.inject.Provider;
 

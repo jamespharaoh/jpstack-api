@@ -1,6 +1,6 @@
 package wbs.api.mvc;
 
-import static wbs.framework.utils.etc.StringUtils.stringFormat;
+import static wbs.utils.string.StringUtils.stringFormat;
 
 import java.io.IOException;
 import java.io.PrintWriter;

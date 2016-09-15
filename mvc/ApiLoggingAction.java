@@ -8,11 +8,11 @@ import lombok.NonNull;
 
 import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.exception.ExceptionUtils;
-import wbs.framework.utils.formatwriter.FormatWriter;
-import wbs.framework.utils.formatwriter.WriterFormatWriter;
 import wbs.framework.web.Action;
 import wbs.framework.web.RequestContext;
 import wbs.framework.web.Responder;
+import wbs.utils.string.FormatWriter;
+import wbs.utils.string.WriterFormatWriter;
 
 public abstract
 class ApiLoggingAction

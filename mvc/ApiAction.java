@@ -1,7 +1,7 @@
 package wbs.api.mvc;
 
-import static wbs.framework.utils.etc.StringUtils.emptyStringIfNull;
-import static wbs.framework.utils.etc.StringUtils.joinWithoutSeparator;
+import static wbs.utils.string.StringUtils.emptyStringIfNull;
+import static wbs.utils.string.StringUtils.joinWithoutSeparator;
 
 import javax.inject.Provider;
 

@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Provider;
 
 import lombok.NonNull;
 
 import wbs.framework.builder.Builder;
 import wbs.framework.builder.BuilderFactory;
+import wbs.framework.component.annotations.NormalLifecycleSetup;
 import wbs.framework.component.annotations.PrototypeDependency;
 import wbs.framework.component.annotations.SingletonComponent;
 
@@ -36,7 +36,7 @@ class ApiModuleBuilder
 
 	// init
 
-	@PostConstruct
+	@NormalLifecycleSetup
 	public
 	void init () {
 
