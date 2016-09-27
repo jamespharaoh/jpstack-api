@@ -5,6 +5,7 @@ import javax.inject.Provider;
 
 import wbs.framework.component.annotations.SingletonComponent;
 import wbs.framework.component.annotations.UninitializedDependency;
+import wbs.framework.component.config.WbsSpecialConfig;
 import wbs.framework.web.DelegatingPathHandler;
 import wbs.framework.web.PathHandler;
 import wbs.utils.thread.ThreadManager;
@@ -31,7 +32,7 @@ class ApiMiscComponents {
 		return threadManagerImplementationProvider.get ()
 
 			.exceptionTypeCode (
-				"api");
+				"webapi");
 
 	}
 
@@ -41,6 +42,17 @@ class ApiMiscComponents {
 	PathHandler rootPathHandler () {
 
 		return delegatingPathHandlerProvider.get ();
+
+	}
+
+	@SingletonComponent ("wbsSpecialConfig")
+	public
+	WbsSpecialConfig wbsSpecialConfig () {
+
+		return new WbsSpecialConfig ()
+
+			.assumeNegativeCache (
+				false);
 
 	}
 
