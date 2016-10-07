@@ -102,7 +102,7 @@ class ApiLoggingAction
 		// output headers
 
 		for (
-			Map.Entry<String,List<String>> headerEntry
+			Map.Entry <String, List <String>> headerEntry
 				: requestContext.headerMap ().entrySet ()
 		) {
 
@@ -126,7 +126,7 @@ class ApiLoggingAction
 		// output params
 
 		for (
-			Map.Entry<String,List<String>> parameterEntry
+			Map.Entry <String, List <String>> parameterEntry
 				: requestContext.parameterMap ().entrySet ()
 		) {
 
