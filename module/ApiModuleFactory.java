@@ -6,15 +6,19 @@ import javax.inject.Named;
 import javax.inject.Provider;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.extern.log4j.Log4j;
 
 import wbs.framework.builder.Builder;
 import wbs.framework.builder.Builder.MissingBuilderBehaviour;
 import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.component.annotations.UninitializedDependency;
 import wbs.framework.component.tools.ComponentFactory;
+import wbs.framework.logging.TaskLogger;
 
+@Log4j
 @Accessors (fluent = true)
 public
 class ApiModuleFactory
@@ -40,7 +44,14 @@ class ApiModuleFactory
 
 	@Override
 	public
-	Object makeComponent () {
+	Object makeComponent (
+			@NonNull TaskLogger taskLogger) {
+
+		taskLogger =
+			taskLogger.nest (
+				this,
+				"makeComponent",
+				log);
 
 		ApiModuleImplementation apiModule =
 			apiModuleImplementationProvider.get ();

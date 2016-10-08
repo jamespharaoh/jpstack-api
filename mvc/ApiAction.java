@@ -7,6 +7,8 @@ import javax.inject.Provider;
 
 import com.google.common.base.Optional;
 
+import lombok.extern.log4j.Log4j;
+
 import wbs.framework.component.annotations.PrototypeDependency;
 import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.component.manager.ComponentManager;
@@ -16,6 +18,7 @@ import wbs.framework.web.Action;
 import wbs.framework.web.RequestContext;
 import wbs.framework.web.Responder;
 
+@Log4j
 public
 abstract class ApiAction
 	implements Action {
@@ -79,8 +82,8 @@ abstract class ApiAction
 	// utils
 
 	protected
-	Provider<Responder> responder (
-			final String name) {
+	Provider <Responder> responder (
+			String name) {
 
 		return new Provider<Responder> () {
 
@@ -89,6 +92,7 @@ abstract class ApiAction
 			Responder get () {
 
 				return componentManager.getComponentRequired (
+					log,
 					name,
 					Responder.class);
 

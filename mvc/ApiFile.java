@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.extern.log4j.Log4j;
 
 import wbs.framework.component.annotations.PrototypeComponent;
 import wbs.framework.component.annotations.PrototypeDependency;
@@ -22,6 +23,7 @@ import wbs.framework.web.RequestHandler;
 import wbs.framework.web.Responder;
 import wbs.framework.web.WebFile;
 
+@Log4j
 @Accessors (fluent = true)
 @PrototypeComponent ("apiFile")
 public
@@ -118,8 +120,9 @@ class ApiFile
 						ServletException,
 						IOException {
 
-					Responder responder = (Responder)
+					Responder responder =
 						componentManager.getComponentRequired (
+							log,
 							beanName,
 							Responder.class);
 
@@ -154,6 +157,7 @@ class ApiFile
 
 				Action action =
 					componentManager.getComponentRequired (
+						log,
 						beanName,
 						Action.class);
 
