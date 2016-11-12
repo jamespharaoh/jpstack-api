@@ -7,18 +7,20 @@ import javax.inject.Provider;
 
 import com.google.common.base.Optional;
 
-import lombok.extern.log4j.Log4j;
+import lombok.NonNull;
 
+import wbs.framework.component.annotations.ClassSingletonDependency;
 import wbs.framework.component.annotations.PrototypeDependency;
 import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.component.manager.ComponentManager;
 import wbs.framework.exception.ExceptionLogger;
 import wbs.framework.exception.GenericExceptionResolution;
-import wbs.framework.web.Action;
-import wbs.framework.web.RequestContext;
-import wbs.framework.web.Responder;
+import wbs.framework.logging.LogContext;
+import wbs.framework.logging.TaskLogger;
+import wbs.web.action.Action;
+import wbs.web.context.RequestContext;
+import wbs.web.responder.Responder;
 
-@Log4j
 public
 abstract class ApiAction
 	implements Action {
@@ -31,6 +33,9 @@ abstract class ApiAction
 	@SingletonDependency
 	ExceptionLogger exceptionLogger;
 
+	@ClassSingletonDependency
+	LogContext logContext;
+
 	@SingletonDependency
 	RequestContext requestContext;
 
@@ -42,17 +47,25 @@ abstract class ApiAction
 	// hooks
 
 	protected abstract
-	Responder goApi ();
+	Responder goApi (
+			TaskLogger taskLogger);
 
 	// implementation
 
 	@Override
 	public final
-	Responder handle () {
+	Responder handle (
+			@NonNull TaskLogger parentTaskLogger) {
+
+		TaskLogger taskLogger =
+			logContext.nestTaskLogger (
+				parentTaskLogger,
+				"handle");
 
 		try {
 
-			return goApi ();
+			return goApi (
+				taskLogger);
 
 		} catch (RuntimeException exception) {
 
@@ -82,23 +95,36 @@ abstract class ApiAction
 	// utils
 
 	protected
-	Provider <Responder> responder (
-			String name) {
+	Provider <Responder> reusableResponder (
+			@NonNull TaskLogger taskLogger,
+			@NonNull String name) {
 
-		return new Provider<Responder> () {
+		return new Provider <Responder> () {
 
 			@Override
 			public
 			Responder get () {
 
 				return componentManager.getComponentRequired (
-					log,
+					taskLogger,
 					name,
 					Responder.class);
 
 			}
 
 		};
+
+	}
+
+	protected
+	Responder responder (
+			@NonNull TaskLogger taskLogger,
+			@NonNull String name) {
+
+		return componentManager.getComponentRequired (
+			taskLogger,
+			name,
+			Responder.class);
 
 	}
 

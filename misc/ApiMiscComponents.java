@@ -6,10 +6,10 @@ import javax.inject.Provider;
 import wbs.framework.component.annotations.SingletonComponent;
 import wbs.framework.component.annotations.UninitializedDependency;
 import wbs.framework.component.config.WbsSpecialConfig;
-import wbs.framework.web.DelegatingPathHandler;
-import wbs.framework.web.PathHandler;
 import wbs.utils.thread.ThreadManager;
 import wbs.utils.thread.ThreadManagerImplementation;
+import wbs.web.pathhandler.DelegatingPathHandler;
+import wbs.web.pathhandler.PathHandler;
 
 @SingletonComponent ("apiMiscComponents")
 public

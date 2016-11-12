@@ -9,16 +9,18 @@ import javax.servlet.ServletException;
 
 import com.google.common.base.Optional;
 
-import lombok.extern.log4j.Log4j;
+import lombok.NonNull;
 
+import wbs.framework.component.annotations.ClassSingletonDependency;
 import wbs.framework.component.annotations.SingletonComponent;
 import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.exception.ExceptionLogger;
 import wbs.framework.exception.GenericExceptionResolution;
-import wbs.framework.web.RequestContext;
-import wbs.framework.web.WebNotFoundHandler;
+import wbs.framework.logging.LogContext;
+import wbs.framework.logging.TaskLogger;
+import wbs.web.context.RequestContext;
+import wbs.web.handler.WebNotFoundHandler;
 
-@Log4j
 @SingletonComponent ("apiNotFoundHandler")
 public
 class ApiNotFoundHandler
@@ -29,6 +31,9 @@ class ApiNotFoundHandler
 	@SingletonDependency
 	ExceptionLogger exceptionLogger;
 
+	@ClassSingletonDependency
+	LogContext logContext;
+
 	@SingletonDependency
 	RequestContext requestContext;
 
@@ -36,15 +41,22 @@ class ApiNotFoundHandler
 
 	@Override
 	public
-	void handleNotFound ()
+	void handleNotFound (
+			@NonNull TaskLogger parentTaskLogger)
 		throws
 			ServletException,
 			IOException {
 
+		TaskLogger taskLogger =
+			logContext.nestTaskLogger (
+				parentTaskLogger,
+				"handleNotFound");
+
 		// log it normally
 
-		log.error (
-			"Path not found: " + requestContext.requestUri ());
+		taskLogger.errorFormat (
+			"Path not found: %s",
+			requestContext.requestUri ());
 
 		// create an exception log
 
@@ -68,8 +80,9 @@ class ApiNotFoundHandler
 
 		} catch (RuntimeException exception) {
 
-			log.fatal (
-				"Error creating not found log: " + exception.getMessage ());
+			taskLogger.fatalFormat (
+				"Error creating not found log: %s",
+				exception.getMessage ());
 
 		}
 

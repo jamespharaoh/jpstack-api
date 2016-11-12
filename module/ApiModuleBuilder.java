@@ -13,6 +13,7 @@ import wbs.framework.builder.BuilderFactory;
 import wbs.framework.component.annotations.NormalLifecycleSetup;
 import wbs.framework.component.annotations.PrototypeDependency;
 import wbs.framework.component.annotations.SingletonComponent;
+import wbs.framework.logging.TaskLogger;
 
 @SingletonComponent ("apiModuleBuilder")
 public
@@ -64,6 +65,7 @@ class ApiModuleBuilder
 	@Override
 	public
 	void descend (
+			@NonNull TaskLogger parentTaskLogger,
 			@NonNull Object parentObject,
 			@NonNull List <?> childObjects,
 			@NonNull Object targetObject,
@@ -83,6 +85,7 @@ class ApiModuleBuilder
 		}
 
 		builder.descend (
+			parentTaskLogger,
 			parentObject,
 			firstPass,
 			targetObject,

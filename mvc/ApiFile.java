@@ -8,22 +8,22 @@ import javax.inject.Provider;
 import javax.servlet.ServletException;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.extern.log4j.Log4j;
 
 import wbs.framework.component.annotations.PrototypeComponent;
 import wbs.framework.component.annotations.PrototypeDependency;
 import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.component.manager.ComponentManager;
-import wbs.framework.web.AbstractFile;
-import wbs.framework.web.Action;
-import wbs.framework.web.ActionRequestHandler;
-import wbs.framework.web.RequestHandler;
-import wbs.framework.web.Responder;
-import wbs.framework.web.WebFile;
+import wbs.framework.logging.TaskLogger;
+import wbs.web.action.Action;
+import wbs.web.action.ActionRequestHandler;
+import wbs.web.file.AbstractFile;
+import wbs.web.file.WebFile;
+import wbs.web.handler.RequestHandler;
+import wbs.web.responder.Responder;
 
-@Log4j
 @Accessors (fluent = true)
 @PrototypeComponent ("apiFile")
 public
@@ -69,11 +69,15 @@ class ApiFile
 
 	public
 	ApiFile getActionName (
-			String actionName) {
+			@NonNull TaskLogger parentTaskLogger,
+			@NonNull String actionName) {
 
 		return getHandler (
 			actionRequestHandlerProvider.get ()
-				.actionName (actionName));
+
+			.actionName (
+				parentTaskLogger,
+				actionName));
 
 	}
 
@@ -86,7 +90,8 @@ class ApiFile
 
 			@Override
 			public
-			void handle ()
+			void handle (
+					@NonNull TaskLogger taskLogger)
 				throws
 					ServletException,
 					IOException {
@@ -94,7 +99,8 @@ class ApiFile
 				Responder responder =
 					responderProvider.get ();
 
-				responder.execute ();
+				responder.execute (
+					taskLogger);
 
 			}
 
@@ -107,7 +113,7 @@ class ApiFile
 
 	public
 	ApiFile getResponderName (
-			final String beanName) {
+			String beanName) {
 
 		return getHandler (
 
@@ -115,18 +121,20 @@ class ApiFile
 
 				@Override
 				public
-				void handle ()
+				void handle (
+						@NonNull TaskLogger taskLogger)
 					throws
 						ServletException,
 						IOException {
 
 					Responder responder =
 						componentManager.getComponentRequired (
-							log,
+							taskLogger,
 							beanName,
 							Responder.class);
 
-					responder.execute ();
+					responder.execute (
+						taskLogger);
 
 				}
 
@@ -146,22 +154,24 @@ class ApiFile
 
 	public
 	ApiFile postActionName (
-			final String beanName) {
+			@NonNull String beanName) {
 
 		return postAction (
 			new Action () {
 
 			@Override
 			public
-			Responder handle () {
+			Responder handle (
+					@NonNull TaskLogger taskLogger) {
 
 				Action action =
 					componentManager.getComponentRequired (
-						log,
+						taskLogger,
 						beanName,
 						Action.class);
 
-				return action.handle ();
+				return action.handle (
+					taskLogger);
 
 			}
 

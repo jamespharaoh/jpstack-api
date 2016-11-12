@@ -17,10 +17,11 @@ import lombok.experimental.Accessors;
 
 import wbs.framework.component.annotations.PrototypeComponent;
 import wbs.framework.component.annotations.SingletonDependency;
-import wbs.framework.web.DelegatingPathHandler;
-import wbs.framework.web.PathHandler;
-import wbs.framework.web.RequestContext;
-import wbs.framework.web.WebFile;
+import wbs.framework.logging.TaskLogger;
+import wbs.web.context.RequestContext;
+import wbs.web.file.WebFile;
+import wbs.web.pathhandler.DelegatingPathHandler;
+import wbs.web.pathhandler.PathHandler;
 
 @Accessors (fluent = true)
 @PrototypeComponent ("apiVariable")
@@ -51,6 +52,7 @@ class ApiVariable
 	@Override
 	public
 	WebFile processPath (
+			@NonNull TaskLogger taskLogger,
 			@NonNull String localPath)
 		throws ServletException {
 
@@ -91,6 +93,7 @@ class ApiVariable
 			delegatingPathHandlerProvider.get ();
 
 		return delegatingPathHandler.processPath (
+			taskLogger,
 			pathNext);
 
 	}

@@ -33,9 +33,9 @@ import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.component.manager.ComponentManager;
 import wbs.framework.data.annotations.DataChildren;
 import wbs.framework.data.annotations.DataClass;
-import wbs.framework.web.PathHandler;
-import wbs.framework.web.RequestHandler;
-import wbs.framework.web.WebFile;
+import wbs.web.file.WebFile;
+import wbs.web.handler.RequestHandler;
+import wbs.web.pathhandler.PathHandler;
 
 @Accessors (fluent = true)
 @DataClass ("api-module")

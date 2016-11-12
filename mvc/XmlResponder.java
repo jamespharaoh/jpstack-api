@@ -4,13 +4,16 @@ import java.io.IOException;
 
 import javax.inject.Provider;
 
+import lombok.NonNull;
+
 import org.jdom2.Document;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
 import wbs.framework.component.annotations.SingletonDependency;
-import wbs.framework.web.RequestContext;
-import wbs.framework.web.Responder;
+import wbs.framework.logging.TaskLogger;
+import wbs.web.context.RequestContext;
+import wbs.web.responder.Responder;
 
 public
 class XmlResponder
@@ -40,7 +43,8 @@ class XmlResponder
 
 	@Override
 	public
-	void execute ()
+	void execute (
+			@NonNull TaskLogger parentTaskLogger)
 		throws IOException {
 
 		requestContext.status (

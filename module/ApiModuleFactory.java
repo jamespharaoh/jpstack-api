@@ -9,16 +9,16 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.extern.log4j.Log4j;
 
 import wbs.framework.builder.Builder;
 import wbs.framework.builder.Builder.MissingBuilderBehaviour;
+import wbs.framework.component.annotations.ClassSingletonDependency;
 import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.component.annotations.UninitializedDependency;
 import wbs.framework.component.tools.ComponentFactory;
+import wbs.framework.logging.LogContext;
 import wbs.framework.logging.TaskLogger;
 
-@Log4j
 @Accessors (fluent = true)
 public
 class ApiModuleFactory
@@ -29,6 +29,9 @@ class ApiModuleFactory
 	@SingletonDependency
 	@Named
 	Builder apiModuleBuilder;
+
+	@ClassSingletonDependency
+	LogContext logContext;
 
 	// unitialized dependencies
 
@@ -45,18 +48,18 @@ class ApiModuleFactory
 	@Override
 	public
 	Object makeComponent (
-			@NonNull TaskLogger taskLogger) {
+			@NonNull TaskLogger parentTaskLogger) {
 
-		taskLogger =
-			taskLogger.nest (
-				this,
-				"makeComponent",
-				log);
+		TaskLogger taskLogger =
+			logContext.nestTaskLogger (
+				parentTaskLogger,
+				"makeComponent");
 
 		ApiModuleImplementation apiModule =
 			apiModuleImplementationProvider.get ();
 
 		apiModuleBuilder.descend (
+			taskLogger,
 			simpleContainerSpec,
 			apiModuleSpec.builders (),
 			apiModule,

@@ -4,23 +4,36 @@ import static wbs.utils.string.StringUtils.stringFormat;
 
 import javax.inject.Provider;
 
+import lombok.NonNull;
+
 import wbs.api.module.ApiModuleBuilderHandler;
 import wbs.api.module.ApiModuleImplementation;
 import wbs.api.module.SimpleApiBuilderContainer;
 import wbs.api.module.SimpleApiBuilderContainerImplementation;
+
 import wbs.framework.builder.Builder;
 import wbs.framework.builder.Builder.MissingBuilderBehaviour;
+import wbs.framework.builder.BuilderComponent;
 import wbs.framework.builder.annotations.BuildMethod;
 import wbs.framework.builder.annotations.BuilderParent;
 import wbs.framework.builder.annotations.BuilderSource;
 import wbs.framework.builder.annotations.BuilderTarget;
+import wbs.framework.component.annotations.ClassSingletonDependency;
 import wbs.framework.component.annotations.PrototypeComponent;
 import wbs.framework.component.annotations.PrototypeDependency;
+import wbs.framework.logging.LogContext;
+import wbs.framework.logging.TaskLogger;
 
 @PrototypeComponent ("apiVariableBuilder")
 @ApiModuleBuilderHandler
 public
-class ApiVariableBuilder {
+class ApiVariableBuilder
+	implements BuilderComponent {
+
+	// singleton dependencies
+
+	@ClassSingletonDependency
+	LogContext logContext;
 
 	// prototype dependencies
 
@@ -48,9 +61,16 @@ class ApiVariableBuilder {
 	// build
 
 	@BuildMethod
+	@Override
 	public
 	void build (
-			Builder builder) {
+			@NonNull TaskLogger parentTaskLogger,
+			@NonNull Builder builder) {
+
+		TaskLogger taskLogger =
+			logContext.nestTaskLogger (
+				parentTaskLogger,
+				"build");
 
 		setDefaults ();
 		initContainers ();
@@ -60,6 +80,7 @@ class ApiVariableBuilder {
 			spec.name ());
 
 		builder.descend (
+			taskLogger,
 			childContainer,
 			spec.builders (),
 			apiModule,

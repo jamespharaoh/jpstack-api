@@ -1,9 +1,9 @@
 package wbs.api.module;
 
-import wbs.framework.web.ServletModule;
+import wbs.web.responder.WebModule;
 
 public
 interface ApiModule
-	extends ServletModule {
+	extends WebModule {
 
 }

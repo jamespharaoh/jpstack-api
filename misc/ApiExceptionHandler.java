@@ -11,17 +11,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.common.base.Optional;
 
-import lombok.extern.log4j.Log4j;
+import lombok.NonNull;
 
+import wbs.framework.component.annotations.ClassSingletonDependency;
 import wbs.framework.component.annotations.SingletonComponent;
 import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.exception.ExceptionLogger;
 import wbs.framework.exception.ExceptionUtils;
 import wbs.framework.exception.GenericExceptionResolution;
-import wbs.framework.web.RequestContext;
-import wbs.framework.web.WebExceptionHandler;
+import wbs.framework.logging.LogContext;
+import wbs.framework.logging.TaskLogger;
+import wbs.web.context.RequestContext;
+import wbs.web.handler.WebExceptionHandler;
 
-@Log4j
 @SingletonComponent ("exceptionHandler")
 public
 class ApiExceptionHandler
@@ -35,6 +37,9 @@ class ApiExceptionHandler
 	@SingletonDependency
 	ExceptionUtils exceptionLogic;
 
+	@ClassSingletonDependency
+	LogContext logContext;
+
 	@SingletonDependency
 	RequestContext requestContext;
 
@@ -43,18 +48,23 @@ class ApiExceptionHandler
 	@Override
 	public
 	void handleException (
-			Throwable throwable)
+			@NonNull TaskLogger parentTaskLogger,
+			@NonNull Throwable throwable)
 		throws
 			ServletException,
 			IOException {
 
+		TaskLogger taskLogger =
+			logContext.nestTaskLogger (
+				parentTaskLogger,
+				"handleException");
+
 		// log it the old fashioned way
 
-		log.error (
-			stringFormat (
-				"Error at %s",
-				requestContext.requestUri ()),
-			throwable);
+		taskLogger.errorFormatException (
+			throwable,
+			"Error at %s",
+			requestContext.requestUri ());
 
 		// make an exception log of this calamity
 
@@ -106,9 +116,9 @@ class ApiExceptionHandler
 
 		} catch (RuntimeException exception) {
 
-			log.fatal (
-				"Error creating exception log",
-				exception);
+			taskLogger.fatalFormatException (
+				exception,
+				"Error creating exception log");
 
 		}
 

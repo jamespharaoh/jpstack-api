@@ -2,7 +2,7 @@ package wbs.api.mvc;
 
 import java.util.Map;
 
-import wbs.framework.web.Responder;
+import wbs.web.responder.Responder;
 
 public
 interface StringMapResponderFactory {

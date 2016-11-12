@@ -8,15 +8,23 @@ import lombok.NonNull;
 
 import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.exception.ExceptionUtils;
-import wbs.framework.web.Action;
-import wbs.framework.web.RequestContext;
-import wbs.framework.web.Responder;
+import wbs.framework.logging.DefaultLogContext;
+import wbs.framework.logging.LogContext;
+import wbs.framework.logging.TaskLogger;
 import wbs.utils.string.FormatWriter;
 import wbs.utils.string.WriterFormatWriter;
+import wbs.web.action.Action;
+import wbs.web.context.RequestContext;
+import wbs.web.responder.Responder;
 
 public abstract
 class ApiLoggingAction
 	implements Action {
+
+	private final static
+	LogContext logContext =
+		DefaultLogContext.forClass (
+			ApiLoggingAction.class);
 
 	// dependencies
 
@@ -42,35 +50,48 @@ class ApiLoggingAction
 
 	protected abstract
 	void storeLog (
+			TaskLogger taskLogger,
 			String debugLog);
 
 	protected abstract
 	void processRequest (
+			TaskLogger taskLogger,
 			FormatWriter debugWriter);
 
 	protected abstract
-	void updateDatabase ();
+	void updateDatabase (
+			TaskLogger taskLogger);
 
 	protected abstract
 	Responder createResponse (
+			TaskLogger taskLogger,
 			FormatWriter debugWriter);
 
 	// implementation
 
 	@Override
 	public
-	Responder handle () {
+	Responder handle (
+			@NonNull TaskLogger taskLogger) {
+
+		taskLogger =
+			logContext.nestTaskLogger (
+				taskLogger,
+				"handle");
 
 		try {
 
 			logRequest ();
 
 			processRequest (
+				taskLogger,
 				debugFormatWriter);
 
-			updateDatabase ();
+			updateDatabase (
+				taskLogger);
 
 			return createResponse (
+				taskLogger,
 				debugFormatWriter);
 
 		} catch (RuntimeException exception) {
@@ -83,6 +104,7 @@ class ApiLoggingAction
 		} finally {
 
 			storeLog (
+				taskLogger,
 				debugWriter.toString ());
 
 		}

@@ -12,11 +12,14 @@ import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import wbs.framework.component.annotations.ClassSingletonDependency;
 import wbs.framework.component.annotations.PrototypeComponent;
 import wbs.framework.component.annotations.SingletonDependency;
-import wbs.framework.web.RequestContext;
-import wbs.framework.web.RequestHandler;
-import wbs.framework.web.WebFile;
+import wbs.framework.logging.LogContext;
+import wbs.framework.logging.TaskLogger;
+import wbs.web.context.RequestContext;
+import wbs.web.file.WebFile;
+import wbs.web.handler.RequestHandler;
 
 @Accessors (fluent = true)
 @PrototypeComponent ("apiResource")
@@ -25,6 +28,9 @@ class ApiResource
 	implements WebFile {
 
 	// dependencies
+
+	@ClassSingletonDependency
+	LogContext logContext;
 
 	@SingletonDependency
 	RequestContext requestContext;
@@ -39,19 +45,30 @@ class ApiResource
 
 	public
 	void handleGeneric (
+			@NonNull TaskLogger parentTaskLogger,
 			@NonNull Method method)
 		throws
 			ServletException,
 			IOException {
+
+		TaskLogger taskLogger =
+			logContext.nestTaskLogger (
+				parentTaskLogger,
+				"handleGeneric");
 
 		RequestHandler requestHandler =
 			requestHandlers.get (
 				method);
 
 		if (requestHandler != null) {
-			requestHandler.handle ();
+
+			requestHandler.handle (
+				taskLogger);
+
 		} else {
+
 			handleMethodNotAllowed ();
+
 		}
 
 	}
@@ -70,31 +87,46 @@ class ApiResource
 
 	@Override
 	public
-	void doGet ()
+	void doGet (
+			@NonNull TaskLogger parentTaskLogger)
 		throws
 			ServletException,
 			IOException {
 
+		TaskLogger taskLogger =
+			logContext.nestTaskLogger (
+				parentTaskLogger,
+				"doGet");
+
 		handleGeneric (
+			taskLogger,
 			Method.get);
 
 	}
 
 	@Override
 	public
-	void doPost ()
+	void doPost (
+			@NonNull TaskLogger parentTaskLogger)
 		throws
 			ServletException,
 			IOException {
 
+		TaskLogger taskLogger =
+			logContext.nestTaskLogger (
+				parentTaskLogger,
+				"doPost");
+
 		handleGeneric (
+			taskLogger,
 			Method.post);
 
 	}
 
 	@Override
 	public
-	void doOptions ()
+	void doOptions (
+			@NonNull TaskLogger taskLogger)
 		throws
 			ServletException,
 			IOException {

@@ -6,11 +6,14 @@ import static wbs.utils.string.StringUtils.joinWithoutSeparator;
 
 import javax.inject.Provider;
 
+import lombok.NonNull;
+
 import wbs.api.module.ApiModuleBuilderHandler;
 import wbs.api.module.ApiModuleImplementation;
 import wbs.api.module.SimpleApiBuilderContainer;
 import wbs.api.resource.ApiResource.Method;
 import wbs.framework.builder.Builder;
+import wbs.framework.builder.BuilderComponent;
 import wbs.framework.builder.annotations.BuildMethod;
 import wbs.framework.builder.annotations.BuilderParent;
 import wbs.framework.builder.annotations.BuilderSource;
@@ -19,13 +22,15 @@ import wbs.framework.component.annotations.PrototypeComponent;
 import wbs.framework.component.annotations.PrototypeDependency;
 import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.component.manager.ComponentManager;
-import wbs.framework.web.ActionRequestHandler;
-import wbs.framework.web.RequestHandler;
+import wbs.framework.logging.TaskLogger;
+import wbs.web.action.ActionRequestHandler;
+import wbs.web.handler.RequestHandler;
 
 @PrototypeComponent ("apiGetActionBuilder")
 @ApiModuleBuilderHandler
 public
-class ApiGetActionBuilder {
+class ApiGetActionBuilder
+	implements BuilderComponent {
 
 	// dependencies
 
@@ -57,9 +62,11 @@ class ApiGetActionBuilder {
 	// build
 
 	@BuildMethod
+	@Override
 	public
 	void build (
-			Builder builder) {
+			@NonNull TaskLogger parentTaskLogger,
+			@NonNull Builder builder) {
 
 		setDefaults ();
 
@@ -67,6 +74,7 @@ class ApiGetActionBuilder {
 			actionRequestHandlerProvider.get ()
 
 			.actionName (
+				parentTaskLogger,
 				actionBeanName);
 
 		apiModule.addRequestHandler (
