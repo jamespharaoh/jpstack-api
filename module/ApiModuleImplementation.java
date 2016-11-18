@@ -1,6 +1,6 @@
 package wbs.api.module;
 
-import static wbs.utils.string.StringUtils.stringFormat;
+import static wbs.utils.string.StringUtils.stringFormatObsolete;
 import static wbs.utils.string.StringUtils.stringNotEqualSafe;
 
 import java.util.ArrayList;
@@ -193,7 +193,7 @@ class ApiModuleImplementation
 		if (requestHandlers.containsKey (key)) {
 
 			throw new RuntimeException (
-				stringFormat (
+				stringFormatObsolete (
 					"Method %s ",
 					method,
 					"implemented twice for resource %s",

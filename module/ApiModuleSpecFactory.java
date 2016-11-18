@@ -38,9 +38,15 @@ class ApiModuleSpecFactory
 	Object makeComponent (
 			@NonNull TaskLogger parentTaskLogger) {
 
+		TaskLogger taskLogger =
+			logContext.nestTaskLogger (
+				parentTaskLogger,
+				"makeComponent");
+
 		try {
 
 			return apiSpecReader.readClasspath (
+				taskLogger,
 				xmlResourceName);
 
 		} catch (Exception exception) {
