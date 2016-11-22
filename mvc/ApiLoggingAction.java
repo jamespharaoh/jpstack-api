@@ -11,8 +11,10 @@ import wbs.framework.exception.ExceptionUtils;
 import wbs.framework.logging.DefaultLogContext;
 import wbs.framework.logging.LogContext;
 import wbs.framework.logging.TaskLogger;
+
 import wbs.utils.string.FormatWriter;
 import wbs.utils.string.WriterFormatWriter;
+
 import wbs.web.action.Action;
 import wbs.web.context.RequestContext;
 import wbs.web.responder.Responder;
@@ -50,21 +52,21 @@ class ApiLoggingAction
 
 	protected abstract
 	void storeLog (
-			TaskLogger taskLogger,
+			TaskLogger parentTaskLogger,
 			String debugLog);
 
 	protected abstract
 	void processRequest (
-			TaskLogger taskLogger,
+			TaskLogger parentTaskLogger,
 			FormatWriter debugWriter);
 
 	protected abstract
 	void updateDatabase (
-			TaskLogger taskLogger);
+			TaskLogger parentTaskLogger);
 
 	protected abstract
 	Responder createResponse (
-			TaskLogger taskLogger,
+			TaskLogger parentTaskLogger,
 			FormatWriter debugWriter);
 
 	// implementation
@@ -72,11 +74,11 @@ class ApiLoggingAction
 	@Override
 	public
 	Responder handle (
-			@NonNull TaskLogger taskLogger) {
+			@NonNull TaskLogger parentTaskLogger) {
 
-		taskLogger =
+		TaskLogger taskLogger =
 			logContext.nestTaskLogger (
-				taskLogger,
+				parentTaskLogger,
 				"handle");
 
 		try {
