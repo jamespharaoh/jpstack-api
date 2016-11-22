@@ -177,7 +177,7 @@ class ApiFile
 
 	public
 	WebFile postApiAction (
-			WebApiAction webApiAction) {
+			@NonNull WebApiAction webApiAction) {
 
 		return postHandler (
 			webApiManager.makeWebApiActionRequestHandler (
