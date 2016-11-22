@@ -17,6 +17,7 @@ import wbs.framework.component.annotations.PrototypeDependency;
 import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.component.manager.ComponentManager;
 import wbs.framework.logging.TaskLogger;
+
 import wbs.web.action.Action;
 import wbs.web.action.ActionRequestHandler;
 import wbs.web.file.AbstractFile;
@@ -58,12 +59,16 @@ class ApiFile
 	// utilities
 
 	public
-	ApiFile getAction (
-			Action action) {
+	ApiFile getActionProvider (
+			Provider <Action> actionProvider) {
 
 		return getHandler (
 			actionRequestHandlerProvider.get ()
-				.action (action));
+
+			.actionProvider (
+				actionProvider)
+
+		);
 
 	}
 
@@ -82,8 +87,8 @@ class ApiFile
 	}
 
 	public
-	ApiFile getResponder (
-			final Provider<Responder> responderProvider) {
+	ApiFile getResponderProvider (
+			@NonNull Provider <Responder> responderProvider) {
 
 		RequestHandler requestHandler =
 			new RequestHandler () {
@@ -143,39 +148,30 @@ class ApiFile
 	}
 
 	public
-	ApiFile postAction (
-			Action action) {
+	ApiFile postActionProvider (
+			Provider <Action> actionProvider) {
 
 		return postHandler (
 			actionRequestHandlerProvider.get ()
-				.action (action));
+
+			.actionProvider (
+				actionProvider)
+
+		);
 
 	}
 
 	public
 	ApiFile postActionName (
+			@NonNull TaskLogger parentTaskLogger,
 			@NonNull String beanName) {
 
-		return postAction (
-			new Action () {
+		return postActionProvider (
+			componentManager.getComponentProviderRequired (
+				parentTaskLogger,
+				beanName,
+				Action.class));
 
-			@Override
-			public
-			Responder handle (
-					@NonNull TaskLogger taskLogger) {
-
-				Action action =
-					componentManager.getComponentRequired (
-						taskLogger,
-						beanName,
-						Action.class);
-
-				return action.handle (
-					taskLogger);
-
-			}
-
-		});
 
 	}
 
