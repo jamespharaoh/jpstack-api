@@ -6,6 +6,7 @@
 		<component class="ApiErrorResponder"/>
 		<component class="ApiFile"/>
 		<component class="ApiNotFoundHandler"/>
+		<component class="WebApiActionRequestHandler"/>
 		<component class="WebApiManager"/>
 	</layer>
 
