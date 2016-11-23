@@ -1,6 +1,7 @@
 package wbs.api.module;
 
-import static wbs.utils.string.StringUtils.stringFormatObsolete;
+import static wbs.utils.etc.EnumUtils.enumName;
+import static wbs.utils.string.StringUtils.stringFormat;
 import static wbs.utils.string.StringUtils.stringNotEqualSafe;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import wbs.api.resource.ApiResource;
 import wbs.api.resource.ApiResource.Method;
 import wbs.api.resource.ApiVariable;
+
 import wbs.framework.component.annotations.NormalLifecycleSetup;
 import wbs.framework.component.annotations.PrototypeComponent;
 import wbs.framework.component.annotations.PrototypeDependency;
@@ -33,6 +35,7 @@ import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.component.manager.ComponentManager;
 import wbs.framework.data.annotations.DataChildren;
 import wbs.framework.data.annotations.DataClass;
+
 import wbs.web.file.WebFile;
 import wbs.web.handler.RequestHandler;
 import wbs.web.pathhandler.PathHandler;
@@ -193,9 +196,10 @@ class ApiModuleImplementation
 		if (requestHandlers.containsKey (key)) {
 
 			throw new RuntimeException (
-				stringFormatObsolete (
+				stringFormat (
 					"Method %s ",
-					method,
+					enumName (
+						method),
 					"implemented twice for resource %s",
 					resourceName));
 
