@@ -1,5 +1,7 @@
 package wbs.api.mvc;
 
+import static wbs.utils.collection.MapUtils.mapIsNotEmpty;
+
 import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
@@ -116,14 +118,19 @@ class ApiLoggingAction
 	protected
 	void logRequest () {
 
-		// output
+		// output headers
 
-		debugFormatWriter.writeFormat (
-			"%s %s\n",
+		debugFormatWriter.writeLineFormat (
+			"===== REQUEST HEADERS =====");
+
+		debugFormatWriter.writeNewline ();
+
+		debugFormatWriter.writeLineFormat (
+			"%s %s",
 			requestContext.method (),
 			requestContext.requestUri ());
 
-		// output headers
+		debugFormatWriter.writeNewline ();
 
 		for (
 			Map.Entry <String, List <String>> headerEntry
@@ -135,8 +142,8 @@ class ApiLoggingAction
 					: headerEntry.getValue ()
 			) {
 
-				debugFormatWriter.writeFormat (
-					"%s = %s\n",
+				debugFormatWriter.writeLineFormat (
+					"%s: %s",
 					headerEntry.getKey (),
 					headerValue);
 
@@ -144,32 +151,44 @@ class ApiLoggingAction
 
 		}
 
-		debugFormatWriter.writeFormat (
-			"\n");
+		debugFormatWriter.writeNewline ();
 
 		// output params
 
-		for (
-			Map.Entry <String, List <String>> parameterEntry
-				: requestContext.parameterMap ().entrySet ()
+		if (
+			mapIsNotEmpty (
+				requestContext.parameterMap ())
 		) {
 
+
+			debugFormatWriter.writeLineFormat (
+				"===== REQUEST PARAMETERS =====");
+
+			debugFormatWriter.writeNewline ();
+
+
 			for (
-				String parameterValue
-					: parameterEntry.getValue ()
+				Map.Entry <String, List <String>> parameterEntry
+					: requestContext.parameterMap ().entrySet ()
 			) {
 
-				debugFormatWriter.writeFormat (
-					"%s = %s\n",
-					parameterEntry.getKey (),
-					parameterValue);
+				for (
+					String parameterValue
+						: parameterEntry.getValue ()
+				) {
+
+					debugFormatWriter.writeLineFormat (
+						"%s = %s",
+						parameterEntry.getKey (),
+						parameterValue);
+
+				}
 
 			}
 
-		}
+			debugFormatWriter.writeNewline ();
 
-		debugFormatWriter.writeFormat (
-			"\n");
+		}
 
 	}
 
@@ -177,12 +196,12 @@ class ApiLoggingAction
 	void logFailure (
 			@NonNull Throwable exception) {
 
-		debugFormatWriter.writeFormat (
-			"*** THREW EXCEPTION ***\n",
-			"\n");
+		debugFormatWriter.writeLineFormat (
+			"===== THREW EXCEPTION =====");
 
-		debugFormatWriter.writeFormat (
-			"%s\n",
+		debugFormatWriter.writeNewline ();
+
+		debugFormatWriter.writeString (
 			exceptionUtils.throwableDump (
 				exception));
 
