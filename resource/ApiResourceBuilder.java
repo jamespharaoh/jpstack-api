@@ -1,5 +1,6 @@
 package wbs.api.resource;
 
+import static wbs.utils.etc.NullUtils.ifNull;
 import static wbs.utils.string.StringUtils.joinWithSlash;
 
 import javax.inject.Provider;
@@ -91,7 +92,9 @@ class ApiResourceBuilder
 		resourceName =
 			joinWithSlash (
 				container.resourceName (),
-				spec.name ());
+				ifNull (
+					spec.path (),
+					spec.name ()));
 
 	}
 
