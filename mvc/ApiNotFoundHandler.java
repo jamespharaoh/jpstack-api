@@ -1,9 +1,9 @@
 package wbs.api.mvc;
 
+import static wbs.utils.etc.OptionalUtils.optionalOrEmptyString;
 import static wbs.utils.string.StringUtils.stringFormat;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 
@@ -18,6 +18,8 @@ import wbs.framework.exception.ExceptionLogger;
 import wbs.framework.exception.GenericExceptionResolution;
 import wbs.framework.logging.LogContext;
 import wbs.framework.logging.TaskLogger;
+
+import wbs.utils.string.FormatWriter;
 
 import wbs.web.context.RequestContext;
 import wbs.web.handler.WebNotFoundHandler;
@@ -67,9 +69,8 @@ class ApiNotFoundHandler
 				stringFormat (
 					"%s%s",
 					requestContext.servletPath (),
-					requestContext.pathInfo () != null
-						? requestContext.pathInfo ()
-						: "");
+					optionalOrEmptyString (
+						requestContext.pathInfo ()));
 
 			exceptionLogger.logSimple (
 				"console",
@@ -89,14 +90,14 @@ class ApiNotFoundHandler
 
 		// return an error
 
-		requestContext.status (404);
+		requestContext.sendError (
+			404l);
 
-		PrintWriter out =
-			requestContext.writer ();
+		FormatWriter formatWriter =
+			requestContext.formatWriter ();
 
-		out.print (
-			stringFormat (
-				"404 Not found\n"));
+		formatWriter.writeLineFormat (
+			"404 Not found");
 
 
 	}

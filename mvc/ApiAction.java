@@ -1,6 +1,6 @@
 package wbs.api.mvc;
 
-import static wbs.utils.string.StringUtils.emptyStringIfNull;
+import static wbs.utils.etc.OptionalUtils.optionalOrEmptyString;
 import static wbs.utils.string.StringUtils.joinWithoutSeparator;
 
 import javax.inject.Provider;
@@ -75,7 +75,7 @@ abstract class ApiAction
 			String path =
 				joinWithoutSeparator (
 					requestContext.servletPath (),
-					emptyStringIfNull (
+					optionalOrEmptyString (
 						requestContext.pathInfo ()));
 
 			exceptionLogger.logThrowable (

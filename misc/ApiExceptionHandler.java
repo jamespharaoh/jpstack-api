@@ -1,5 +1,6 @@
 package wbs.api.misc;
 
+import static wbs.utils.etc.NumberUtils.fromJavaInteger;
 import static wbs.utils.string.StringUtils.stringFormat;
 
 import java.io.IOException;
@@ -126,7 +127,8 @@ class ApiExceptionHandler
 		// set the error code
 
 		requestContext.status (
-			HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			fromJavaInteger (
+				HttpServletResponse.SC_INTERNAL_SERVER_ERROR));
 
 	}
 

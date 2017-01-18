@@ -12,6 +12,7 @@ import org.jdom2.output.XMLOutputter;
 
 import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.logging.TaskLogger;
+
 import wbs.web.context.RequestContext;
 import wbs.web.responder.Responder;
 
@@ -25,19 +26,21 @@ class XmlResponder
 	RequestContext requestContext;
 
 	private final
-	Document document;
+	Document xmlDocument;
 
 	private final
-	int status;
+	Long status;
 
 	public
 	XmlResponder (
-			Document newDoc,
-			int newStatus) {
+			@NonNull Document xmlDocument,
+			@NonNull Long status) {
 
-		document = newDoc;
+		this.xmlDocument =
+			xmlDocument;
 
-		status = newStatus;
+		this.status =
+			status;
 
 	}
 
@@ -59,7 +62,7 @@ class XmlResponder
 				Format.getPrettyFormat ());
 
 		xmlOutputter.output (
-			document,
+			xmlDocument,
 			requestContext.outputStream ());
 
 	}

@@ -1,5 +1,7 @@
 package wbs.api.resource;
 
+import static wbs.utils.etc.NumberUtils.fromJavaInteger;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +19,7 @@ import wbs.framework.component.annotations.PrototypeComponent;
 import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.logging.LogContext;
 import wbs.framework.logging.TaskLogger;
+
 import wbs.web.context.RequestContext;
 import wbs.web.file.WebFile;
 import wbs.web.handler.RequestHandler;
@@ -80,7 +83,8 @@ class ApiResource
 			IOException {
 
 		requestContext.sendError (
-			HttpServletResponse.SC_METHOD_NOT_ALLOWED,
+			fromJavaInteger (
+				HttpServletResponse.SC_METHOD_NOT_ALLOWED),
 			requestContext.requestUri ());
 
 	}
