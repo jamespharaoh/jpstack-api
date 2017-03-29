@@ -1,8 +1,8 @@
 package wbs.api.mvc;
 
-import java.io.IOException;
+import static wbs.utils.etc.OptionalUtils.optionalAbsent;
 
-import com.google.common.base.Optional;
+import java.io.IOException;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -16,6 +16,7 @@ import wbs.framework.exception.ExceptionLogger;
 import wbs.framework.exception.GenericExceptionResolution;
 import wbs.framework.logging.LogContext;
 import wbs.framework.logging.TaskLogger;
+
 import wbs.web.context.RequestContext;
 import wbs.web.handler.RequestHandler;
 import wbs.web.responder.Responder;
@@ -73,10 +74,11 @@ class WebApiActionRequestHandler
 		} catch (Exception exception) {
 
 			exceptionLogger.logThrowable (
+				taskLogger,
 				"webapi",
 				requestContext.requestUri (),
 				exception,
-				Optional.absent (),
+				optionalAbsent (),
 				GenericExceptionResolution.ignoreWithThirdPartyWarning);
 
 		}

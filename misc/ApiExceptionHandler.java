@@ -1,6 +1,7 @@
 package wbs.api.misc;
 
 import static wbs.utils.etc.NumberUtils.fromJavaInteger;
+import static wbs.utils.etc.OptionalUtils.optionalAbsent;
 import static wbs.utils.string.StringUtils.stringFormat;
 
 import java.io.IOException;
@@ -9,8 +10,6 @@ import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
-
-import com.google.common.base.Optional;
 
 import lombok.NonNull;
 
@@ -108,13 +107,14 @@ class ApiExceptionHandler
 			}
 
 			exceptionLogger.logSimple (
+				taskLogger,
 				"webapi",
 				requestContext.requestUri (),
 				exceptionLogic.throwableSummary (
 					throwable),
 				stringBuilder.toString (),
-				Optional.absent (),
-				GenericExceptionResolution.ignoreWithThirdPartyWarning);
+				optionalAbsent (),
+					GenericExceptionResolution.ignoreWithThirdPartyWarning);
 
 		} catch (RuntimeException exception) {
 

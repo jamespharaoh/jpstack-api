@@ -1,11 +1,10 @@
 package wbs.api.mvc;
 
+import static wbs.utils.etc.OptionalUtils.optionalAbsent;
 import static wbs.utils.etc.OptionalUtils.optionalOrEmptyString;
 import static wbs.utils.string.StringUtils.joinWithoutSeparator;
 
 import javax.inject.Provider;
-
-import com.google.common.base.Optional;
 
 import lombok.NonNull;
 
@@ -79,10 +78,11 @@ abstract class ApiAction
 						requestContext.pathInfo ()));
 
 			exceptionLogger.logThrowable (
+				taskLogger,
 				"webapi",
 				path,
 				exception,
-				Optional.absent (),
+				optionalAbsent (),
 				GenericExceptionResolution.ignoreWithThirdPartyWarning);
 
 			// and show a simple error page

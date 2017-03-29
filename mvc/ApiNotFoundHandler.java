@@ -1,13 +1,12 @@
 package wbs.api.mvc;
 
+import static wbs.utils.etc.OptionalUtils.optionalAbsent;
 import static wbs.utils.etc.OptionalUtils.optionalOrEmptyString;
 import static wbs.utils.string.StringUtils.stringFormat;
 
 import java.io.IOException;
 
 import javax.servlet.ServletException;
-
-import com.google.common.base.Optional;
 
 import lombok.NonNull;
 
@@ -73,11 +72,12 @@ class ApiNotFoundHandler
 						requestContext.pathInfo ()));
 
 			exceptionLogger.logSimple (
+				taskLogger,
 				"console",
 				path,
 				"Not found",
 				"The specified path was not found",
-				Optional.absent (),
+				optionalAbsent (),
 				GenericExceptionResolution.ignoreWithThirdPartyWarning);
 
 		} catch (RuntimeException exception) {
