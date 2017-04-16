@@ -97,7 +97,6 @@ abstract class ApiAction
 
 	protected
 	Provider <Responder> reusableResponder (
-			@NonNull TaskLogger taskLogger,
 			@NonNull String name) {
 
 		return new Provider <Responder> () {
@@ -105,6 +104,10 @@ abstract class ApiAction
 			@Override
 			public
 			Responder get () {
+
+				TaskLogger taskLogger =
+					logContext.createTaskLogger (
+						"reusableResponder.Provider.get");
 
 				return componentManager.getComponentRequired (
 					taskLogger,
@@ -119,8 +122,13 @@ abstract class ApiAction
 
 	protected
 	Responder responder (
-			@NonNull TaskLogger taskLogger,
+			@NonNull TaskLogger parentTaskLogger,
 			@NonNull String name) {
+
+		TaskLogger taskLogger =
+			logContext.nestTaskLogger (
+				parentTaskLogger,
+				"responder");
 
 		return componentManager.getComponentRequired (
 			taskLogger,

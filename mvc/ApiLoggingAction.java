@@ -101,6 +101,7 @@ class ApiLoggingAction
 		} catch (RuntimeException exception) {
 
 			logFailure (
+				taskLogger,
 				exception);
 
 			throw exception;
@@ -194,7 +195,13 @@ class ApiLoggingAction
 
 	protected
 	void logFailure (
+			@NonNull TaskLogger parentTaskLogger,
 			@NonNull Throwable exception) {
+
+		TaskLogger taskLogger =
+			logContext.nestTaskLogger (
+				parentTaskLogger,
+				"logFailure");
 
 		debugFormatWriter.writeLineFormat (
 			"===== THREW EXCEPTION =====");
@@ -203,6 +210,7 @@ class ApiLoggingAction
 
 		debugFormatWriter.writeString (
 			exceptionUtils.throwableDump (
+				taskLogger,
 				exception));
 
 	}

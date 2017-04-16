@@ -76,6 +76,7 @@ class ApiExceptionHandler
 
 			stringBuilder.append (
 				exceptionLogic.throwableDump (
+					taskLogger,
 					throwable));
 
 			stringBuilder.append (
@@ -111,6 +112,7 @@ class ApiExceptionHandler
 				"webapi",
 				requestContext.requestUri (),
 				exceptionLogic.throwableSummary (
+					taskLogger,
 					throwable),
 				stringBuilder.toString (),
 				optionalAbsent (),

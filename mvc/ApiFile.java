@@ -96,7 +96,7 @@ class ApiFile
 			@Override
 			public
 			void handle (
-					@NonNull TaskLogger taskLogger)
+					@NonNull TaskLogger parentTaskLogger)
 				throws
 					ServletException,
 					IOException {
@@ -105,7 +105,7 @@ class ApiFile
 					responderProvider.get ();
 
 				responder.execute (
-					taskLogger);
+					parentTaskLogger);
 
 			}
 
@@ -127,19 +127,19 @@ class ApiFile
 				@Override
 				public
 				void handle (
-						@NonNull TaskLogger taskLogger)
+						@NonNull TaskLogger parentTaskLogger)
 					throws
 						ServletException,
 						IOException {
 
 					Responder responder =
 						componentManager.getComponentRequired (
-							taskLogger,
+							parentTaskLogger,
 							beanName,
 							Responder.class);
 
 					responder.execute (
-						taskLogger);
+						parentTaskLogger);
 
 				}
 
