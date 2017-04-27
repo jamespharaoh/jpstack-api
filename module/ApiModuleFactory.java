@@ -50,22 +50,28 @@ class ApiModuleFactory
 	Object makeComponent (
 			@NonNull TaskLogger parentTaskLogger) {
 
-		TaskLogger taskLogger =
-			logContext.nestTaskLogger (
-				parentTaskLogger,
-				"makeComponent");
+		try (
 
-		ApiModuleImplementation apiModule =
-			apiModuleImplementationProvider.get ();
+			TaskLogger taskLogger =
+				logContext.nestTaskLogger (
+					parentTaskLogger,
+					"makeComponent");
 
-		apiModuleBuilder.descend (
-			taskLogger,
-			simpleContainerSpec,
-			apiModuleSpec.builders (),
-			apiModule,
-			MissingBuilderBehaviour.error);
+		) {
 
-		return apiModule;
+			ApiModuleImplementation apiModule =
+				apiModuleImplementationProvider.get ();
+
+			apiModuleBuilder.descend (
+				taskLogger,
+				simpleContainerSpec,
+				apiModuleSpec.builders (),
+				apiModule,
+				MissingBuilderBehaviour.error);
+
+			return apiModule;
+
+		}
 
 	}
 

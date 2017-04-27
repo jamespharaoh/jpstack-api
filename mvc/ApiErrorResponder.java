@@ -1,7 +1,5 @@
 package wbs.api.mvc;
 
-import java.io.IOException;
-
 import lombok.NonNull;
 
 import wbs.framework.component.annotations.PrototypeComponent;
@@ -28,21 +26,26 @@ class ApiErrorResponder
 	@Override
 	public
 	void execute (
-			@NonNull TaskLogger parentTaskLogger)
-		throws IOException {
+			@NonNull TaskLogger parentTaskLogger) {
 
 		requestContext.sendError (
 			500l,
 			"Internal error");
 
-		FormatWriter formatWriter =
-			requestContext.formatWriter ();
+		try (
 
-		formatWriter.writeLineFormat (
-			"ERROR");
+			FormatWriter formatWriter =
+				requestContext.formatWriter ();
 
-		formatWriter.writeLineFormat (
-			"Internal error");
+		) {
+
+			formatWriter.writeLineFormat (
+				"ERROR");
+
+			formatWriter.writeLineFormat (
+				"Internal error");
+
+		}
 
 	}
 

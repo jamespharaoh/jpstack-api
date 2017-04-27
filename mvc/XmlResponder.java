@@ -10,20 +10,33 @@ import org.jdom2.Document;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
+import wbs.framework.component.annotations.ClassSingletonDependency;
+import wbs.framework.component.annotations.PrototypeComponent;
 import wbs.framework.component.annotations.SingletonDependency;
+import wbs.framework.logging.LogContext;
 import wbs.framework.logging.TaskLogger;
+
+import wbs.utils.io.RuntimeIoException;
 
 import wbs.web.context.RequestContext;
 import wbs.web.responder.Responder;
 
+@PrototypeComponent ("xmlResponder")
 public
 class XmlResponder
 	implements
 		Provider <Responder>,
 		Responder {
 
+	// singleton dependencies
+
+	@ClassSingletonDependency
+	LogContext logContext;
+
 	@SingletonDependency
 	RequestContext requestContext;
+
+	// state
 
 	private final
 	Document xmlDocument;
@@ -47,23 +60,38 @@ class XmlResponder
 	@Override
 	public
 	void execute (
-			@NonNull TaskLogger parentTaskLogger)
-		throws IOException {
+			@NonNull TaskLogger parentTaskLogger) {
 
-		requestContext.status (
-			status);
+		try (
 
-		requestContext.setHeader (
-			"Content-Type",
-			"text/xml");
+			TaskLogger taskLogger =
+				logContext.nestTaskLogger (
+					parentTaskLogger,
+					"execute");
 
-		XMLOutputter xmlOutputter =
-			new XMLOutputter (
-				Format.getPrettyFormat ());
+		) {
 
-		xmlOutputter.output (
-			xmlDocument,
-			requestContext.outputStream ());
+			requestContext.status (
+				status);
+
+			requestContext.setHeader (
+				"Content-Type",
+				"text/xml");
+
+			XMLOutputter xmlOutputter =
+				new XMLOutputter (
+					Format.getPrettyFormat ());
+
+			xmlOutputter.output (
+				xmlDocument,
+				requestContext.outputStream ());
+
+		} catch (IOException ioException) {
+
+			throw new RuntimeIoException (
+				ioException);
+
+		}
 
 	}
 

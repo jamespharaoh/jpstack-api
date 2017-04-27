@@ -4,11 +4,9 @@ import static wbs.utils.etc.NumberUtils.fromJavaInteger;
 import static wbs.utils.etc.OptionalUtils.optionalAbsent;
 import static wbs.utils.string.StringUtils.stringFormat;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
 import lombok.NonNull;
@@ -50,87 +48,90 @@ class ApiExceptionHandler
 	public
 	void handleException (
 			@NonNull TaskLogger parentTaskLogger,
-			@NonNull Throwable throwable)
-		throws
-			ServletException,
-			IOException {
+			@NonNull Throwable throwable) {
 
-		TaskLogger taskLogger =
-			logContext.nestTaskLogger (
-				parentTaskLogger,
-				"handleException");
+		try (
 
-		// log it the old fashioned way
+			TaskLogger taskLogger =
+				logContext.nestTaskLogger (
+					parentTaskLogger,
+					"handleException");
 
-		taskLogger.errorFormatException (
-			throwable,
-			"Error at %s",
-			requestContext.requestUri ());
+		) {
 
-		// make an exception log of this calamity
+			// log it the old fashioned way
 
-		try {
+			taskLogger.errorFormatException (
+				throwable,
+				"Error at %s",
+				requestContext.requestUri ());
 
-			StringBuilder stringBuilder =
-				new StringBuilder ();
+			// make an exception log of this calamity
 
-			stringBuilder.append (
-				exceptionLogic.throwableDump (
-					taskLogger,
-					throwable));
+			try {
 
-			stringBuilder.append (
-				"\n\nHTTP INFO\n\n");
+				StringBuilder stringBuilder =
+					new StringBuilder ();
 
-			stringBuilder.append (
-				stringFormat (
-					"METHOD = %s\n\n",
-					requestContext.method ()));
+				stringBuilder.append (
+					exceptionLogic.throwableDump (
+						taskLogger,
+						throwable));
 
-			for (
-				Map.Entry<String,List<String>> entry
-					: requestContext.parameterMap ().entrySet ()
-			) {
+				stringBuilder.append (
+					"\n\nHTTP INFO\n\n");
+
+				stringBuilder.append (
+					stringFormat (
+						"METHOD = %s\n\n",
+						requestContext.method ()));
 
 				for (
-					String value
-						: entry.getValue ()
+					Map.Entry<String,List<String>> entry
+						: requestContext.parameterMap ().entrySet ()
 				) {
 
-					stringBuilder.append (
-						stringFormat (
-							"%s = \"%s\"\n",
-							entry.getKey (),
-							value));
+					for (
+						String value
+							: entry.getValue ()
+					) {
+
+						stringBuilder.append (
+							stringFormat (
+								"%s = \"%s\"\n",
+								entry.getKey (),
+								value));
+
+					}
 
 				}
 
+				exceptionLogger.logSimple (
+					taskLogger,
+					"webapi",
+					requestContext.requestUri (),
+					exceptionLogic.throwableSummary (
+						taskLogger,
+						throwable),
+					stringBuilder.toString (),
+					optionalAbsent (),
+						GenericExceptionResolution.ignoreWithThirdPartyWarning);
+
+			} catch (RuntimeException exception) {
+
+				taskLogger.fatalFormatException (
+					exception,
+					"Error creating exception log");
+
 			}
 
-			exceptionLogger.logSimple (
-				taskLogger,
-				"webapi",
-				requestContext.requestUri (),
-				exceptionLogic.throwableSummary (
-					taskLogger,
-					throwable),
-				stringBuilder.toString (),
-				optionalAbsent (),
-					GenericExceptionResolution.ignoreWithThirdPartyWarning);
+			// set the error code
 
-		} catch (RuntimeException exception) {
-
-			taskLogger.fatalFormatException (
-				exception,
-				"Error creating exception log");
+			requestContext.status (
+				fromJavaInteger (
+					HttpServletResponse.SC_INTERNAL_SERVER_ERROR));
 
 		}
-
-		// set the error code
-
-		requestContext.status (
-			fromJavaInteger (
-				HttpServletResponse.SC_INTERNAL_SERVER_ERROR));
 
 	}
 

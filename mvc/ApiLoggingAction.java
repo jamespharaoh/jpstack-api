@@ -78,39 +78,45 @@ class ApiLoggingAction
 	Responder handle (
 			@NonNull TaskLogger parentTaskLogger) {
 
-		TaskLogger taskLogger =
-			logContext.nestTaskLogger (
-				parentTaskLogger,
-				"handle");
+		try (
 
-		try {
+			TaskLogger taskLogger =
+				logContext.nestTaskLogger (
+					parentTaskLogger,
+					"handle");
 
-			logRequest ();
+		) {
 
-			processRequest (
-				taskLogger,
-				debugFormatWriter);
+			try {
 
-			updateDatabase (
-				taskLogger);
+				logRequest ();
 
-			return createResponse (
-				taskLogger,
-				debugFormatWriter);
+				processRequest (
+					taskLogger,
+					debugFormatWriter);
 
-		} catch (RuntimeException exception) {
+				updateDatabase (
+					taskLogger);
 
-			logFailure (
-				taskLogger,
-				exception);
+				return createResponse (
+					taskLogger,
+					debugFormatWriter);
 
-			throw exception;
+			} catch (RuntimeException exception) {
 
-		} finally {
+				logFailure (
+					taskLogger,
+					exception);
 
-			storeLog (
-				taskLogger,
-				debugWriter.toString ());
+				throw exception;
+
+			} finally {
+
+				storeLog (
+					taskLogger,
+					debugWriter.toString ());
+
+			}
 
 		}
 
@@ -198,20 +204,26 @@ class ApiLoggingAction
 			@NonNull TaskLogger parentTaskLogger,
 			@NonNull Throwable exception) {
 
-		TaskLogger taskLogger =
-			logContext.nestTaskLogger (
-				parentTaskLogger,
-				"logFailure");
+		try (
 
-		debugFormatWriter.writeLineFormat (
-			"===== THREW EXCEPTION =====");
+			TaskLogger taskLogger =
+				logContext.nestTaskLogger (
+					parentTaskLogger,
+					"logFailure");
 
-		debugFormatWriter.writeNewline ();
+		) {
 
-		debugFormatWriter.writeString (
-			exceptionUtils.throwableDump (
-				taskLogger,
-				exception));
+			debugFormatWriter.writeLineFormat (
+				"===== THREW EXCEPTION =====");
+
+			debugFormatWriter.writeNewline ();
+
+			debugFormatWriter.writeString (
+				exceptionUtils.throwableDump (
+					taskLogger,
+					exception));
+
+		}
 
 	}
 

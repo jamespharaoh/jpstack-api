@@ -68,18 +68,24 @@ class ApiModuleSpecReader {
 			@NonNull TaskLogger parentTaskLogger,
 			@NonNull String xmlResourceName) {
 
-		TaskLogger taskLogger =
-			logContext.nestTaskLogger (
-				parentTaskLogger,
-				"readClasspath");
+		try (
 
-		ApiModuleSpec apiModuleSpec =
-			(ApiModuleSpec)
-			dataFromXml.readClasspath (
-				taskLogger,
-				xmlResourceName);
+			TaskLogger taskLogger =
+				logContext.nestTaskLogger (
+					parentTaskLogger,
+					"readClasspath");
 
-		return apiModuleSpec;
+		) {
+
+			ApiModuleSpec apiModuleSpec =
+				(ApiModuleSpec)
+				dataFromXml.readClasspath (
+					taskLogger,
+					xmlResourceName);
+
+			return apiModuleSpec;
+
+		}
 
 	}
 

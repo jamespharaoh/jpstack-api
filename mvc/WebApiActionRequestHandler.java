@@ -2,8 +2,6 @@ package wbs.api.mvc;
 
 import static wbs.utils.etc.OptionalUtils.optionalAbsent;
 
-import java.io.IOException;
-
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -48,47 +46,52 @@ class WebApiActionRequestHandler
 	@Override
 	public
 	void handle (
-			@NonNull TaskLogger parentTaskLogger)
-		throws IOException {
+			@NonNull TaskLogger parentTaskLogger) {
 
-		TaskLogger taskLogger =
-			logContext.nestTaskLogger (
-				parentTaskLogger,
-				"handle");
+		try (
 
-		try {
+			TaskLogger taskLogger =
+				logContext.nestTaskLogger (
+					parentTaskLogger,
+					"handle");
 
-			Responder responder =
-				action.go (
-					taskLogger);
+		) {
 
-			if (responder != null) {
+			try {
 
-				responder.execute (
-					parentTaskLogger);
+				Responder responder =
+					action.go (
+						taskLogger);
 
-				return;
+				if (responder != null) {
+
+					responder.execute (
+						parentTaskLogger);
+
+					return;
+
+				}
+
+			} catch (Exception exception) {
+
+				exceptionLogger.logThrowable (
+					taskLogger,
+					"webapi",
+					requestContext.requestUri (),
+					exception,
+					optionalAbsent (),
+					GenericExceptionResolution.ignoreWithThirdPartyWarning);
 
 			}
 
-		} catch (Exception exception) {
+			Responder responder =
+				action.makeFallbackResponder ()
+					.get ();
 
-			exceptionLogger.logThrowable (
-				taskLogger,
-				"webapi",
-				requestContext.requestUri (),
-				exception,
-				optionalAbsent (),
-				GenericExceptionResolution.ignoreWithThirdPartyWarning);
+			responder.execute (
+				taskLogger);
 
 		}
-
-		Responder responder =
-			action.makeFallbackResponder ()
-				.get ();
-
-		responder.execute (
-			taskLogger);
 
 	}
 

@@ -4,10 +4,6 @@ import static wbs.utils.etc.OptionalUtils.optionalAbsent;
 import static wbs.utils.etc.OptionalUtils.optionalOrEmptyString;
 import static wbs.utils.string.StringUtils.stringFormat;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-
 import lombok.NonNull;
 
 import wbs.framework.component.annotations.ClassSingletonDependency;
@@ -44,61 +40,69 @@ class ApiNotFoundHandler
 	@Override
 	public
 	void handleNotFound (
-			@NonNull TaskLogger parentTaskLogger)
-		throws
-			ServletException,
-			IOException {
+			@NonNull TaskLogger parentTaskLogger) {
 
-		TaskLogger taskLogger =
-			logContext.nestTaskLogger (
-				parentTaskLogger,
-				"handleNotFound");
+		try (
 
-		// log it normally
+			TaskLogger taskLogger =
+				logContext.nestTaskLogger (
+					parentTaskLogger,
+					"handleNotFound");
 
-		taskLogger.errorFormat (
-			"Path not found: %s",
-			requestContext.requestUri ());
+		) {
 
-		// create an exception log
+			// log it normally
 
-		try {
+			taskLogger.errorFormat (
+				"Path not found: %s",
+				requestContext.requestUri ());
 
-			String path =
-				stringFormat (
-					"%s%s",
-					requestContext.servletPath (),
-					optionalOrEmptyString (
-						requestContext.pathInfo ()));
+			// create an exception log
 
-			exceptionLogger.logSimple (
-				taskLogger,
-				"console",
-				path,
-				"Not found",
-				"The specified path was not found",
-				optionalAbsent (),
-				GenericExceptionResolution.ignoreWithThirdPartyWarning);
+			try {
 
-		} catch (RuntimeException exception) {
+				String path =
+					stringFormat (
+						"%s%s",
+						requestContext.servletPath (),
+						optionalOrEmptyString (
+							requestContext.pathInfo ()));
 
-			taskLogger.fatalFormat (
-				"Error creating not found log: %s",
-				exception.getMessage ());
+				exceptionLogger.logSimple (
+					taskLogger,
+					"console",
+					path,
+					"Not found",
+					"The specified path was not found",
+					optionalAbsent (),
+					GenericExceptionResolution.ignoreWithThirdPartyWarning);
+
+			} catch (RuntimeException exception) {
+
+				taskLogger.fatalFormat (
+					"Error creating not found log: %s",
+					exception.getMessage ());
+
+			}
+
+			// return an error
+
+			requestContext.sendError (
+				404l);
+
+			try (
+
+				FormatWriter formatWriter =
+					requestContext.formatWriter ();
+
+			) {
+
+				formatWriter.writeLineFormat (
+					"404 Not found");
+
+			}
 
 		}
-
-		// return an error
-
-		requestContext.sendError (
-			404l);
-
-		FormatWriter formatWriter =
-			requestContext.formatWriter ();
-
-		formatWriter.writeLineFormat (
-			"404 Not found");
-
 
 	}
 

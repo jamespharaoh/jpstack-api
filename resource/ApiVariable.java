@@ -8,7 +8,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.inject.Provider;
-import javax.servlet.ServletException;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -59,53 +58,58 @@ class ApiVariable
 	public
 	WebFile processPath (
 			@NonNull TaskLogger parentTaskLogger,
-			@NonNull String localPath)
-		throws ServletException {
+			@NonNull String localPath) {
 
-		TaskLogger taskLogger =
-			logContext.nestTaskLogger (
-				parentTaskLogger,
-				"processPath");
+		try (
 
-		// get value from path
+			TaskLogger taskLogger =
+				logContext.nestTaskLogger (
+					parentTaskLogger,
+					"processPath");
 
-		Matcher localPathMatcher =
-			pathPattern.matcher (
-				localPath);
+		) {
 
-		if (! localPathMatcher.matches ())
-			throw new RuntimeException ();
+			// get value from path
 
-		String variableValue =
-			requiredValue (
-				localPathMatcher.group (1));
+			Matcher localPathMatcher =
+				pathPattern.matcher (
+					localPath);
 
-		requestContext.request (
-			variableName,
-			variableValue);
+			if (! localPathMatcher.matches ())
+				throw new RuntimeException ();
 
-		// continue processing request
+			String variableValue =
+				requiredValue (
+					localPathMatcher.group (1));
 
-		String localPathRest =
-			requiredValue (
-				localPathMatcher.group (2));
-
-		String pathNext =
-			stringFormat (
-				"%s",
-				resourceName,
-				"/{%s}",
+			requestContext.request (
 				variableName,
-				"%s",
-				emptyStringIfNull (
-					localPathRest));
+				variableValue);
 
-		DelegatingPathHandler delegatingPathHandler =
-			delegatingPathHandlerProvider.get ();
+			// continue processing request
 
-		return delegatingPathHandler.processPath (
-			taskLogger,
-			pathNext);
+			String localPathRest =
+				requiredValue (
+					localPathMatcher.group (2));
+
+			String pathNext =
+				stringFormat (
+					"%s",
+					resourceName,
+					"/{%s}",
+					variableName,
+					"%s",
+					emptyStringIfNull (
+						localPathRest));
+
+			DelegatingPathHandler delegatingPathHandler =
+				delegatingPathHandlerProvider.get ();
+
+			return delegatingPathHandler.processPath (
+				taskLogger,
+				pathNext);
+
+		}
 
 	}
 

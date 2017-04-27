@@ -57,37 +57,43 @@ abstract class ApiAction
 	Responder handle (
 			@NonNull TaskLogger parentTaskLogger) {
 
-		TaskLogger taskLogger =
-			logContext.nestTaskLogger (
-				parentTaskLogger,
-				"handle");
+		try (
 
-		try {
+			TaskLogger taskLogger =
+				logContext.nestTaskLogger (
+					parentTaskLogger,
+					"handle");
 
-			return goApi (
-				taskLogger);
+		) {
 
-		} catch (RuntimeException exception) {
+			try {
 
-			// record the exception
+				return goApi (
+					taskLogger);
 
-			String path =
-				joinWithoutSeparator (
-					requestContext.servletPath (),
-					optionalOrEmptyString (
-						requestContext.pathInfo ()));
+			} catch (RuntimeException exception) {
 
-			exceptionLogger.logThrowable (
-				taskLogger,
-				"webapi",
-				path,
-				exception,
-				optionalAbsent (),
-				GenericExceptionResolution.ignoreWithThirdPartyWarning);
+				// record the exception
 
-			// and show a simple error page
+				String path =
+					joinWithoutSeparator (
+						requestContext.servletPath (),
+						optionalOrEmptyString (
+							requestContext.pathInfo ()));
 
-			return apiErrorResponder.get ();
+				exceptionLogger.logThrowable (
+					taskLogger,
+					"webapi",
+					path,
+					exception,
+					optionalAbsent (),
+					GenericExceptionResolution.ignoreWithThirdPartyWarning);
+
+				// and show a simple error page
+
+				return apiErrorResponder.get ();
+
+			}
 
 		}
 
@@ -105,14 +111,20 @@ abstract class ApiAction
 			public
 			Responder get () {
 
-				TaskLogger taskLogger =
-					logContext.createTaskLogger (
-						"reusableResponder.Provider.get");
+				try (
 
-				return componentManager.getComponentRequired (
-					taskLogger,
-					name,
-					Responder.class);
+					TaskLogger taskLogger =
+						logContext.createTaskLogger (
+							"reusableResponder.Provider.get");
+
+				) {
+
+					return componentManager.getComponentRequired (
+						taskLogger,
+						name,
+						Responder.class);
+
+				}
 
 			}
 
@@ -125,15 +137,21 @@ abstract class ApiAction
 			@NonNull TaskLogger parentTaskLogger,
 			@NonNull String name) {
 
-		TaskLogger taskLogger =
-			logContext.nestTaskLogger (
-				parentTaskLogger,
-				"responder");
+		try (
 
-		return componentManager.getComponentRequired (
-			taskLogger,
-			name,
-			Responder.class);
+			TaskLogger taskLogger =
+				logContext.nestTaskLogger (
+					parentTaskLogger,
+					"responder");
+
+		) {
+
+			return componentManager.getComponentRequired (
+				taskLogger,
+				name,
+				Responder.class);
+
+		}
 
 	}
 

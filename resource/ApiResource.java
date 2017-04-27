@@ -2,11 +2,9 @@ package wbs.api.resource;
 
 import static wbs.utils.etc.NumberUtils.fromJavaInteger;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
 import lombok.Getter;
@@ -49,91 +47,107 @@ class ApiResource
 	public
 	void handleGeneric (
 			@NonNull TaskLogger parentTaskLogger,
-			@NonNull Method method)
-		throws
-			ServletException,
-			IOException {
+			@NonNull Method method) {
 
-		TaskLogger taskLogger =
-			logContext.nestTaskLogger (
-				parentTaskLogger,
-				"handleGeneric");
+		try (
 
-		RequestHandler requestHandler =
-			requestHandlers.get (
-				method);
+			TaskLogger taskLogger =
+				logContext.nestTaskLogger (
+					parentTaskLogger,
+					"handleGeneric");
 
-		if (requestHandler != null) {
+		) {
 
-			requestHandler.handle (
-				taskLogger);
+			RequestHandler requestHandler =
+				requestHandlers.get (
+					method);
 
-		} else {
+			if (requestHandler != null) {
 
-			handleMethodNotAllowed ();
+				requestHandler.handle (
+					taskLogger);
+
+			} else {
+
+				handleMethodNotAllowed (
+					taskLogger);
+
+			}
 
 		}
 
 	}
 
 	public
-	void handleMethodNotAllowed ()
-		throws
-			ServletException,
-			IOException {
+	void handleMethodNotAllowed (
+			@NonNull TaskLogger parentTaskLogger) {
 
-		requestContext.sendError (
-			fromJavaInteger (
-				HttpServletResponse.SC_METHOD_NOT_ALLOWED),
-			requestContext.requestUri ());
+		try (
+
+			TaskLogger taskLogger =
+				logContext.nestTaskLogger (
+					parentTaskLogger,
+					"handleMethodNotAllowed");
+
+		) {
+
+			requestContext.sendError (
+				fromJavaInteger (
+					HttpServletResponse.SC_METHOD_NOT_ALLOWED),
+				requestContext.requestUri ());
+
+		}
 
 	}
 
 	@Override
 	public
 	void doGet (
-			@NonNull TaskLogger parentTaskLogger)
-		throws
-			ServletException,
-			IOException {
+			@NonNull TaskLogger parentTaskLogger) {
 
-		TaskLogger taskLogger =
-			logContext.nestTaskLogger (
-				parentTaskLogger,
-				"doGet");
+		try (
 
-		handleGeneric (
-			taskLogger,
-			Method.get);
+			TaskLogger taskLogger =
+				logContext.nestTaskLogger (
+					parentTaskLogger,
+					"doGet");
+
+		) {
+
+			handleGeneric (
+				taskLogger,
+				Method.get);
+
+		}
 
 	}
 
 	@Override
 	public
 	void doPost (
-			@NonNull TaskLogger parentTaskLogger)
-		throws
-			ServletException,
-			IOException {
+			@NonNull TaskLogger parentTaskLogger) {
 
-		TaskLogger taskLogger =
-			logContext.nestTaskLogger (
-				parentTaskLogger,
-				"doPost");
+		try (
 
-		handleGeneric (
-			taskLogger,
-			Method.post);
+			TaskLogger taskLogger =
+				logContext.nestTaskLogger (
+					parentTaskLogger,
+					"doPost");
+
+		) {
+
+			handleGeneric (
+				taskLogger,
+				Method.post);
+
+		}
 
 	}
 
 	@Override
 	public
 	void doOptions (
-			@NonNull TaskLogger parentTaskLogger)
-		throws
-			ServletException,
-			IOException {
+			@NonNull TaskLogger parentTaskLogger) {
 
 	}
 

@@ -68,20 +68,26 @@ class ApiResourceBuilder
 			@NonNull TaskLogger parentTaskLogger,
 			@NonNull Builder builder) {
 
-		TaskLogger taskLogger =
-			logContext.nestTaskLogger (
-				parentTaskLogger,
-				"build");
+		try (
 
-		setDefaults ();
-		initContainers ();
+			TaskLogger taskLogger =
+				logContext.nestTaskLogger (
+					parentTaskLogger,
+					"build");
 
-		builder.descend (
-			taskLogger,
-			childContainer,
-			spec.builders (),
-			apiModule,
-			MissingBuilderBehaviour.error);
+		) {
+
+			setDefaults ();
+			initContainers ();
+
+			builder.descend (
+				taskLogger,
+				childContainer,
+				spec.builders (),
+				apiModule,
+				MissingBuilderBehaviour.error);
+
+		}
 
 	}
 
