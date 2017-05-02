@@ -16,6 +16,7 @@ import wbs.framework.component.annotations.ClassSingletonDependency;
 import wbs.framework.component.annotations.PrototypeComponent;
 import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.logging.LogContext;
+import wbs.framework.logging.OwnedTaskLogger;
 import wbs.framework.logging.TaskLogger;
 
 import wbs.web.context.RequestContext;
@@ -51,7 +52,7 @@ class ApiResource
 
 		try (
 
-			TaskLogger taskLogger =
+			OwnedTaskLogger taskLogger =
 				logContext.nestTaskLogger (
 					parentTaskLogger,
 					"handleGeneric");
@@ -84,7 +85,7 @@ class ApiResource
 
 		try (
 
-			TaskLogger taskLogger =
+			OwnedTaskLogger taskLogger =
 				logContext.nestTaskLogger (
 					parentTaskLogger,
 					"handleMethodNotAllowed");
@@ -107,7 +108,7 @@ class ApiResource
 
 		try (
 
-			TaskLogger taskLogger =
+			OwnedTaskLogger taskLogger =
 				logContext.nestTaskLogger (
 					parentTaskLogger,
 					"doGet");
@@ -129,7 +130,7 @@ class ApiResource
 
 		try (
 
-			TaskLogger taskLogger =
+			OwnedTaskLogger taskLogger =
 				logContext.nestTaskLogger (
 					parentTaskLogger,
 					"doPost");

@@ -6,6 +6,7 @@ import lombok.NonNull;
 
 import wbs.framework.component.annotations.PrototypeDependency;
 import wbs.framework.component.annotations.SingletonComponent;
+
 import wbs.web.handler.RequestHandler;
 
 @SingletonComponent ("webApiManager")

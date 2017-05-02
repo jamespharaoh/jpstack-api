@@ -17,6 +17,7 @@ import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.component.annotations.UninitializedDependency;
 import wbs.framework.component.tools.ComponentFactory;
 import wbs.framework.logging.LogContext;
+import wbs.framework.logging.OwnedTaskLogger;
 import wbs.framework.logging.TaskLogger;
 
 @Accessors (fluent = true)
@@ -28,7 +29,7 @@ class ApiModuleFactory
 
 	@SingletonDependency
 	@Named
-	Builder apiModuleBuilder;
+	Builder <TaskLogger> apiModuleBuilder;
 
 	@ClassSingletonDependency
 	LogContext logContext;
@@ -52,7 +53,7 @@ class ApiModuleFactory
 
 		try (
 
-			TaskLogger taskLogger =
+			OwnedTaskLogger taskLogger =
 				logContext.nestTaskLogger (
 					parentTaskLogger,
 					"makeComponent");

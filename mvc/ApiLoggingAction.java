@@ -12,6 +12,7 @@ import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.exception.ExceptionUtils;
 import wbs.framework.logging.DefaultLogContext;
 import wbs.framework.logging.LogContext;
+import wbs.framework.logging.OwnedTaskLogger;
 import wbs.framework.logging.TaskLogger;
 
 import wbs.utils.string.FormatWriter;
@@ -80,7 +81,7 @@ class ApiLoggingAction
 
 		try (
 
-			TaskLogger taskLogger =
+			OwnedTaskLogger taskLogger =
 				logContext.nestTaskLogger (
 					parentTaskLogger,
 					"handle");
@@ -206,7 +207,7 @@ class ApiLoggingAction
 
 		try (
 
-			TaskLogger taskLogger =
+			OwnedTaskLogger taskLogger =
 				logContext.nestTaskLogger (
 					parentTaskLogger,
 					"logFailure");

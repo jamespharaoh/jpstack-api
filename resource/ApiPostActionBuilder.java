@@ -12,17 +12,22 @@ import wbs.api.module.ApiModuleBuilderHandler;
 import wbs.api.module.ApiModuleImplementation;
 import wbs.api.module.SimpleApiBuilderContainer;
 import wbs.api.resource.ApiResource.Method;
+
 import wbs.framework.builder.Builder;
 import wbs.framework.builder.BuilderComponent;
 import wbs.framework.builder.annotations.BuildMethod;
 import wbs.framework.builder.annotations.BuilderParent;
 import wbs.framework.builder.annotations.BuilderSource;
 import wbs.framework.builder.annotations.BuilderTarget;
+import wbs.framework.component.annotations.ClassSingletonDependency;
 import wbs.framework.component.annotations.PrototypeComponent;
 import wbs.framework.component.annotations.PrototypeDependency;
 import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.component.manager.ComponentManager;
+import wbs.framework.logging.LogContext;
+import wbs.framework.logging.OwnedTaskLogger;
 import wbs.framework.logging.TaskLogger;
+
 import wbs.web.action.ActionRequestHandler;
 import wbs.web.handler.RequestHandler;
 
@@ -36,6 +41,9 @@ class ApiPostActionBuilder
 
 	@SingletonDependency
 	ComponentManager componentManager;
+
+	@ClassSingletonDependency
+	LogContext logContext;
 
 	// prototype dependencies
 
@@ -66,21 +74,32 @@ class ApiPostActionBuilder
 	public
 	void build (
 			@NonNull TaskLogger parentTaskLogger,
-			@NonNull Builder builder) {
+			@NonNull Builder <TaskLogger> builder) {
 
-		setDefaults ();
+		try (
 
-		RequestHandler actionRequestHandler =
-			actionRequestHandlerProvider.get ()
+			OwnedTaskLogger taskLogger =
+				logContext.nestTaskLogger (
+					parentTaskLogger,
+					"build");
 
-			.actionName (
-				parentTaskLogger,
-				actionBeanName);
+		) {
 
-		apiModule.addRequestHandler (
-			resourceName,
-			Method.post,
-			actionRequestHandler);
+			setDefaults ();
+
+			RequestHandler actionRequestHandler =
+				actionRequestHandlerProvider.get ()
+
+				.actionName (
+					taskLogger,
+					actionBeanName);
+
+			apiModule.addRequestHandler (
+				resourceName,
+				Method.post,
+				actionRequestHandler);
+
+		}
 
 	}
 

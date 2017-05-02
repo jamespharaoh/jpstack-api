@@ -14,6 +14,7 @@ import wbs.framework.component.annotations.SingletonComponent;
 import wbs.framework.data.tools.DataFromXml;
 import wbs.framework.data.tools.DataFromXmlBuilder;
 import wbs.framework.logging.LogContext;
+import wbs.framework.logging.OwnedTaskLogger;
 import wbs.framework.logging.TaskLogger;
 
 @Accessors (fluent = true)
@@ -70,7 +71,7 @@ class ApiModuleSpecReader {
 
 		try (
 
-			TaskLogger taskLogger =
+			OwnedTaskLogger taskLogger =
 				logContext.nestTaskLogger (
 					parentTaskLogger,
 					"readClasspath");
