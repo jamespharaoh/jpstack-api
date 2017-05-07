@@ -27,11 +27,14 @@ class ApiModuleSpecReader {
 	@ClassSingletonDependency
 	LogContext logContext;
 
-	// collection dependencies
+	// prototype dependencies
 
 	@PrototypeDependency
 	@ApiModuleData
 	Map <Class <?>, Provider <ApiModuleSpec>> apiModuleSpecProviders;
+
+	@PrototypeDependency
+	Provider <DataFromXmlBuilder> dataFromXmlBuilderProvider;
 
 	// state
 
@@ -43,22 +46,13 @@ class ApiModuleSpecReader {
 	public
 	void init () {
 
-		DataFromXmlBuilder builder =
-			new DataFromXmlBuilder ();
-
-		for (
-			Map.Entry <Class <?>, Provider <ApiModuleSpec>> entry
-				: apiModuleSpecProviders.entrySet ()
-		) {
-
-			builder.registerBuilder (
-				entry.getKey (),
-				entry.getValue ());
-
-		}
-
 		dataFromXml =
-			builder.build ();
+			dataFromXmlBuilderProvider.get ()
+
+			.registerBuilders (
+				apiModuleSpecProviders)
+
+			.build ();
 
 	}
 

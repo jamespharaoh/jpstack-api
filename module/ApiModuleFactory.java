@@ -23,7 +23,7 @@ import wbs.framework.logging.TaskLogger;
 @Accessors (fluent = true)
 public
 class ApiModuleFactory
-	implements ComponentFactory {
+	implements ComponentFactory <ApiModuleImplementation> {
 
 	// dependencies
 
@@ -48,7 +48,7 @@ class ApiModuleFactory
 
 	@Override
 	public
-	Object makeComponent (
+	ApiModuleImplementation makeComponent (
 			@NonNull TaskLogger parentTaskLogger) {
 
 		try (

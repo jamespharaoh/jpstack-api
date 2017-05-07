@@ -8,9 +8,9 @@ import java.util.Map;
 
 import lombok.NonNull;
 
+import wbs.framework.component.annotations.ClassSingletonDependency;
 import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.exception.ExceptionUtils;
-import wbs.framework.logging.DefaultLogContext;
 import wbs.framework.logging.LogContext;
 import wbs.framework.logging.OwnedTaskLogger;
 import wbs.framework.logging.TaskLogger;
@@ -26,15 +26,13 @@ public abstract
 class ApiLoggingAction
 	implements Action {
 
-	private final static
-	LogContext logContext =
-		DefaultLogContext.forClass (
-			ApiLoggingAction.class);
-
-	// dependencies
+	// singleton dependencies
 
 	@SingletonDependency
 	ExceptionUtils exceptionUtils;
+
+	@ClassSingletonDependency
+	LogContext logContext;
 
 	@SingletonDependency
 	protected
