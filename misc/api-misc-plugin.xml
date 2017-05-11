@@ -4,7 +4,9 @@
 
 	<layer name="api">
 		<component class="ApiExceptionHandler"/>
-		<component class="ApiMiscComponents"/>
+		<component class="ApiPathHandler"/>
+		<component class="ApiSpecialConfig"/>
+		<component class="ApiThreadManager"/>
 	</layer>
 
 </plugin>

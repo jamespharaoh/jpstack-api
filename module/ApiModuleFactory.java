@@ -2,7 +2,6 @@ package wbs.api.module;
 
 import static wbs.utils.string.StringUtils.hyphenToCamel;
 
-import javax.inject.Named;
 import javax.inject.Provider;
 
 import lombok.Getter;
@@ -13,6 +12,7 @@ import lombok.experimental.Accessors;
 import wbs.framework.builder.Builder;
 import wbs.framework.builder.Builder.MissingBuilderBehaviour;
 import wbs.framework.component.annotations.ClassSingletonDependency;
+import wbs.framework.component.annotations.NamedDependency;
 import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.component.annotations.UninitializedDependency;
 import wbs.framework.component.tools.ComponentFactory;
@@ -28,7 +28,7 @@ class ApiModuleFactory
 	// dependencies
 
 	@SingletonDependency
-	@Named
+	@NamedDependency
 	Builder <TaskLogger> apiModuleBuilder;
 
 	@ClassSingletonDependency
