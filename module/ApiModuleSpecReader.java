@@ -74,7 +74,7 @@ class ApiModuleSpecReader {
 
 			ApiModuleSpec apiModuleSpec =
 				(ApiModuleSpec)
-				dataFromXml.readClasspath (
+				dataFromXml.readClasspathRequired (
 					taskLogger,
 					xmlResourceName);
 
