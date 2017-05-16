@@ -44,15 +44,27 @@ class ApiModuleSpecReader {
 
 	@NormalLifecycleSetup
 	public
-	void init () {
+	void setup (
+			@NonNull TaskLogger parentTaskLogger) {
 
-		dataFromXml =
-			dataFromXmlBuilderProvider.get ()
+		try (
 
-			.registerBuilders (
-				apiModuleSpecProviders)
+			OwnedTaskLogger taskLogger =
+				logContext.nestTaskLogger (
+					parentTaskLogger,
+					"setup");
 
-			.build ();
+		) {
+
+			dataFromXml =
+				dataFromXmlBuilderProvider.get ()
+
+				.registerBuilders (
+					apiModuleSpecProviders)
+
+				.build ();
+
+		}
 
 	}
 
