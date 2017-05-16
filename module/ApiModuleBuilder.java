@@ -59,23 +59,17 @@ class ApiModuleBuilder
 
 		) {
 
-			BuilderFactory <?, TaskLogger> builderFactory =
-				builderFactoryProvider.get ();
-
-			for (
-				Map.Entry <Class <?>, Provider <Object>> entry
-					: apiModuleBuilders.entrySet ()
-			) {
-
-				builderFactory.addBuilder (
-					taskLogger,
-					entry.getKey (),
-					entry.getValue ());
-
-			}
-
 			builder =
-				builderFactory.create (
+				builderFactoryProvider.get ()
+
+				.contextClass (
+					TaskLogger.class)
+
+				.addBuilders (
+					taskLogger,
+					apiModuleBuilders)
+
+				.create (
 					taskLogger);
 
 		}
