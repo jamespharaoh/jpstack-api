@@ -92,7 +92,7 @@ class ApiFile
 
 	public
 	ApiFile getResponderProvider (
-			@NonNull Provider <Responder> responderProvider) {
+			@NonNull Provider <? extends Responder> responderProvider) {
 
 		RequestHandler requestHandler =
 			new RequestHandler () {

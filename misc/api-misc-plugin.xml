@@ -3,10 +3,14 @@
 	package="wbs.api.misc">
 
 	<layer name="api">
+
+		<component class="ApiCoreModule"/>
 		<component class="ApiExceptionHandler"/>
+		<component class="ApiHomeResponder"/>
 		<component class="ApiPathHandler"/>
 		<component class="ApiSpecialConfig"/>
 		<component class="ApiThreadManager"/>
+
 	</layer>
 
 </plugin>
