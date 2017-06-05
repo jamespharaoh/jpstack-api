@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-import wbs.api.module.ApiModuleData;
+import wbs.api.module.ApiSpec;
 
 import wbs.framework.component.annotations.PrototypeComponent;
 import wbs.framework.data.annotations.DataAttribute;
@@ -17,9 +17,9 @@ import wbs.framework.data.annotations.DataClass;
 @ToString (of = "name")
 @DataClass ("post-action")
 @PrototypeComponent ("apiPostActionSpec")
-@ApiModuleData
 public
-class ApiPostActionSpec {
+class ApiPostActionSpec
+	implements ApiSpec {
 
 	@DataAttribute (
 		required = true)

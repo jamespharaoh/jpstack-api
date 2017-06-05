@@ -30,7 +30,6 @@ class ApiModuleSpecReader {
 	// prototype dependencies
 
 	@PrototypeDependency
-	@ApiModuleData
 	Map <Class <?>, Provider <ApiModuleSpec>> apiModuleSpecProviders;
 
 	@PrototypeDependency

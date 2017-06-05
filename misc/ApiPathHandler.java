@@ -26,12 +26,12 @@ class ApiPathHandler
 	@ClassSingletonDependency
 	LogContext logContext;
 
-	// unitialized dependencies
+	// uninitialized dependencies
 
 	@UninitializedDependency
 	Provider <DelegatingPathHandler> delegatingPathHandlerProvider;
 
-	// components
+	// implementation
 
 	@Override
 	public

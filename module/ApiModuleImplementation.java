@@ -28,13 +28,17 @@ import wbs.api.resource.ApiResource;
 import wbs.api.resource.ApiResource.Method;
 import wbs.api.resource.ApiVariable;
 
+import wbs.framework.component.annotations.ClassSingletonDependency;
 import wbs.framework.component.annotations.NormalLifecycleSetup;
 import wbs.framework.component.annotations.PrototypeComponent;
-import wbs.framework.component.annotations.PrototypeDependency;
 import wbs.framework.component.annotations.SingletonDependency;
+import wbs.framework.component.annotations.StrongPrototypeDependency;
 import wbs.framework.component.manager.ComponentManager;
 import wbs.framework.data.annotations.DataChildren;
 import wbs.framework.data.annotations.DataClass;
+import wbs.framework.logging.LogContext;
+import wbs.framework.logging.OwnedTaskLogger;
+import wbs.framework.logging.TaskLogger;
 
 import wbs.web.file.WebFile;
 import wbs.web.handler.RequestHandler;
@@ -52,12 +56,15 @@ class ApiModuleImplementation
 	@SingletonDependency
 	ComponentManager componentManager;
 
+	@ClassSingletonDependency
+	LogContext logContext;
+
 	// prototype dependencies
 
-	@PrototypeDependency
+	@StrongPrototypeDependency
 	Provider <ApiResource> apiResourceProvider;
 
-	@PrototypeDependency
+	@StrongPrototypeDependency
 	Provider <ApiVariable> apiVariableProvider;
 
 	// properties
@@ -87,96 +94,108 @@ class ApiModuleImplementation
 
 	@NormalLifecycleSetup
 	public
-	void init () {
+	void setup (
+			@NonNull TaskLogger parentTaskLogger) {
 
-		// create files from terminal resource names
+		try (
 
-		List <String> terminalResourceNamesList =
-			new ArrayList<> (
-				terminalResourceNames);
+			OwnedTaskLogger taskLogger =
+				logContext.nestTaskLogger (
+					parentTaskLogger,
+					"setup");
 
-		Collections.sort (
-			terminalResourceNamesList);
-
-		for (
-			String terminalResourceName :
-				terminalResourceNamesList
 		) {
 
-			ApiResource resource =
-				apiResourceProvider.get ();
+			// create files from terminal resource names
+
+			List <String> terminalResourceNamesList =
+				new ArrayList<> (
+					terminalResourceNames);
+
+			Collections.sort (
+				terminalResourceNamesList);
 
 			for (
-				Method method
-					: Method.values ()
+				String terminalResourceName :
+					terminalResourceNamesList
 			) {
 
-				Pair <String, Method> key =
-					Pair.of (
-						terminalResourceName,
-						method);
+				ApiResource resource =
+					apiResourceProvider.get ();
 
-				RequestHandler requestHandler =
-					requestHandlers.get (
-						key);
+				for (
+					Method method
+						: Method.values ()
+				) {
 
-				if (requestHandler == null)
-					continue;
+					Pair <String, Method> key =
+						Pair.of (
+							terminalResourceName,
+							method);
 
-				resource.requestHandlers ().put (
-					method,
-					requestHandler);
+					RequestHandler requestHandler =
+						requestHandlers.get (
+							key);
+
+					if (requestHandler == null)
+						continue;
+
+					resource.requestHandlers ().put (
+						method,
+						requestHandler);
+
+				}
+
+				files.put (
+					terminalResourceName,
+					resource);
 
 			}
 
-			files.put (
-				terminalResourceName,
-				resource);
+			// create path handlers from variable resources
+
+			List <String> variableResourceNamesList =
+				new ArrayList<> (
+					variableResources.keySet ());
+
+			Collections.sort (
+				variableResourceNamesList);
+
+			for (
+				String variableResourceName :
+					variableResourceNamesList
+			) {
+
+				String variableName =
+					variableResources.get (
+						variableResourceName);
+
+				ApiVariable variable =
+					apiVariableProvider.get ()
+
+					.resourceName (
+						variableResourceName)
+
+					.variableName (
+						variableName);
+
+				paths.put (
+					variableResourceName,
+					variable);
+
+			}
+
+			// freeze mutable properties
+
+			files =
+				ImmutableMap.copyOf (
+					files);
+
+			paths =
+				ImmutableMap.copyOf (
+					paths);
 
 		}
-
-		// create path handlers from variable resources
-
-		List <String> variableResourceNamesList =
-			new ArrayList<> (
-				variableResources.keySet ());
-
-		Collections.sort (
-			variableResourceNamesList);
-
-		for (
-			String variableResourceName :
-				variableResourceNamesList
-		) {
-
-			String variableName =
-				variableResources.get (
-					variableResourceName);
-
-			ApiVariable variable =
-				apiVariableProvider.get ()
-
-				.resourceName (
-					variableResourceName)
-
-				.variableName (
-					variableName);
-
-			paths.put (
-				variableResourceName,
-				variable);
-
-		}
-
-		// freeze mutable properties
-
-		files =
-			ImmutableMap.copyOf (
-				files);
-
-		paths =
-			ImmutableMap.copyOf (
-				paths);
 
 	}
 

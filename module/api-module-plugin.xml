@@ -3,11 +3,15 @@
 	package="wbs.api.module">
 
 	<layer name="api">
-		<component class="ApiModuleSpec"/>
+
+		<bootstrap-component class="ApiModuleSpec"/>
+		<bootstrap-component class="ApiModuleSpecManagerFactory"/>
+
 		<component class="ApiModuleBuilder"/>
 		<component class="ApiModuleImplementation"/>
 		<component class="ApiModuleSpecReader"/>
 		<component class="SimpleApiBuilderContainerImplementation"/>
+
 	</layer>
 
 </plugin>

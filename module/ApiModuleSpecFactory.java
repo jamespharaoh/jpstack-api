@@ -22,7 +22,7 @@ class ApiModuleSpecFactory
 	// dependencies
 
 	@SingletonDependency
-	ApiModuleSpecReader apiSpecReader;
+	ApiModuleSpecReader apiModuleSpecReader;
 
 	@ClassSingletonDependency
 	LogContext logContext;
@@ -48,7 +48,7 @@ class ApiModuleSpecFactory
 
 		) {
 
-			return apiSpecReader.readClasspath (
+			return apiModuleSpecReader.readClasspath (
 				taskLogger,
 				xmlResourceName);
 

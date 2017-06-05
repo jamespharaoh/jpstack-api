@@ -7,16 +7,15 @@ import static wbs.utils.string.StringUtils.stringFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.inject.Provider;
-
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import wbs.framework.component.annotations.ClassSingletonDependency;
+import wbs.framework.component.annotations.NamedDependency;
 import wbs.framework.component.annotations.PrototypeComponent;
-import wbs.framework.component.annotations.SingletonDependency;
+import wbs.framework.component.annotations.WeakSingletonDependency;
 import wbs.framework.logging.LogContext;
 import wbs.framework.logging.OwnedTaskLogger;
 import wbs.framework.logging.TaskLogger;
@@ -37,13 +36,12 @@ class ApiVariable
 	@ClassSingletonDependency
 	LogContext logContext;
 
-	@SingletonDependency
+	@WeakSingletonDependency
 	RequestContext requestContext;
 
-	// indirect dependencies
-
-	@SingletonDependency
-	Provider <DelegatingPathHandler> delegatingPathHandlerProvider;
+	@WeakSingletonDependency
+	@NamedDependency ("rootPathHandler")
+	DelegatingPathHandler delegatingPathHandler;
 
 	// properties
 
@@ -102,9 +100,6 @@ class ApiVariable
 					"%s",
 					emptyStringIfNull (
 						localPathRest));
-
-			DelegatingPathHandler delegatingPathHandler =
-				delegatingPathHandlerProvider.get ();
 
 			return delegatingPathHandler.processPath (
 				taskLogger,

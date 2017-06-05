@@ -3,16 +3,19 @@
 	package="wbs.api.resource">
 
 	<layer name="api">
+
+		<bootstrap-component class="ApiGetActionSpec"/>
+		<bootstrap-component class="ApiPostActionSpec"/>
+		<bootstrap-component class="ApiResourceSpec"/>
+		<bootstrap-component class="ApiVariableSpec"/>
+
 		<component class="ApiGetActionBuilder"/>
-		<component class="ApiGetActionSpec"/>
 		<component class="ApiPostActionBuilder"/>
-		<component class="ApiPostActionSpec"/>
 		<component class="ApiResource"/>
 		<component class="ApiResourceBuilder"/>
-		<component class="ApiResourceSpec"/>
 		<component class="ApiVariable"/>
 		<component class="ApiVariableBuilder"/>
-		<component class="ApiVariableSpec"/>
+
 	</layer>
 
 </plugin>

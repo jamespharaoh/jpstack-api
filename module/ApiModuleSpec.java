@@ -19,9 +19,9 @@ import wbs.framework.data.annotations.DataClass;
 @ToString (of = "name")
 @DataClass ("api-module")
 @PrototypeComponent ("apiModuleSpec")
-@ApiModuleData
 public
-class ApiModuleSpec {
+class ApiModuleSpec
+	implements ApiSpec {
 
 	@DataAttribute (
 		required = true)
