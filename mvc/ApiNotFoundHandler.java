@@ -71,7 +71,7 @@ class ApiNotFoundHandler
 
 				exceptionLogger.logSimple (
 					taskLogger,
-					"console",
+					"webapi",
 					path,
 					"Not found",
 					"The specified path was not found",
