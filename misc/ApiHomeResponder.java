@@ -47,9 +47,9 @@ class ApiHomeResponder
 
 		) {
 
-			requestContext.addHeader (
-				"Content-Type",
-				"text/plain; charset=utf-8");
+			requestContext.contentType (
+				"text/plain",
+				"utf-8");
 
 		}
 

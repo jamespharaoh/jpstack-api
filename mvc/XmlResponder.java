@@ -75,9 +75,9 @@ class XmlResponder
 			requestContext.status (
 				status);
 
-			requestContext.setHeader (
-				"Content-Type",
-				"text/xml");
+			requestContext.contentType (
+				"text/xml",
+				"utf-8");
 
 			XMLOutputter xmlOutputter =
 				new XMLOutputter (
