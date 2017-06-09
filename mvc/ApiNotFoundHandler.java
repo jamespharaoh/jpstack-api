@@ -4,6 +4,9 @@ import static wbs.utils.etc.OptionalUtils.optionalAbsent;
 import static wbs.utils.etc.OptionalUtils.optionalOrEmptyString;
 import static wbs.utils.string.StringUtils.stringFormat;
 
+import java.io.IOException;
+import java.io.Writer;
+
 import lombok.NonNull;
 
 import wbs.framework.component.annotations.ClassSingletonDependency;
@@ -15,7 +18,9 @@ import wbs.framework.logging.LogContext;
 import wbs.framework.logging.OwnedTaskLogger;
 import wbs.framework.logging.TaskLogger;
 
+import wbs.utils.io.RuntimeIoException;
 import wbs.utils.string.FormatWriter;
+import wbs.utils.string.WriterFormatWriter;
 
 import wbs.web.context.RequestContext;
 import wbs.web.handler.WebNotFoundHandler;
@@ -93,13 +98,22 @@ class ApiNotFoundHandler
 
 			try (
 
+				Writer writer =
+					requestContext.writer ();
+
 				FormatWriter formatWriter =
-					requestContext.formatWriter ();
+					new WriterFormatWriter (
+						writer);
 
 			) {
 
 				formatWriter.writeLineFormat (
 					"404 Not found");
+
+			} catch (IOException ioException) {
+
+				throw new RuntimeIoException (
+					ioException);
 
 			}
 

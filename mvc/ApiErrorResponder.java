@@ -1,12 +1,17 @@
 package wbs.api.mvc;
 
+import java.io.IOException;
+import java.io.Writer;
+
 import lombok.NonNull;
 
 import wbs.framework.component.annotations.PrototypeComponent;
 import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.logging.TaskLogger;
 
+import wbs.utils.io.RuntimeIoException;
 import wbs.utils.string.FormatWriter;
+import wbs.utils.string.WriterFormatWriter;
 
 import wbs.web.context.RequestContext;
 import wbs.web.responder.Responder;
@@ -34,8 +39,12 @@ class ApiErrorResponder
 
 		try (
 
+			Writer writer =
+				requestContext.writer ();
+
 			FormatWriter formatWriter =
-				requestContext.formatWriter ();
+				new WriterFormatWriter (
+					writer);
 
 		) {
 
@@ -44,6 +53,11 @@ class ApiErrorResponder
 
 			formatWriter.writeLineFormat (
 				"Internal error");
+
+		} catch (IOException ioException) {
+
+			throw new RuntimeIoException (
+				ioException);
 
 		}
 

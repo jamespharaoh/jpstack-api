@@ -1,5 +1,7 @@
 package wbs.api.misc;
 
+import static wbs.utils.etc.Misc.doNothing;
+
 import lombok.NonNull;
 
 import wbs.framework.component.annotations.ClassSingletonDependency;
@@ -13,12 +15,12 @@ import wbs.framework.logging.LogContext;
 import wbs.utils.string.FormatWriter;
 
 import wbs.web.context.RequestContext;
-import wbs.web.responder.AbstractResponder;
+import wbs.web.responder.BufferedTextResponder;
 
 @PrototypeComponent ("apiHomeResponder")
 public
 class ApiHomeResponder
-	extends AbstractResponder {
+	extends BufferedTextResponder {
 
 	// singleton dependencies
 
@@ -35,7 +37,16 @@ class ApiHomeResponder
 
 	@Override
 	protected
-	void goHeaders (
+	void prepare (
+			@NonNull Transaction parentTransaction) {
+
+		doNothing ();
+
+	}
+
+	@Override
+	protected
+	void headers (
 			@NonNull Transaction parentTransaction) {
 
 		try (
@@ -43,7 +54,7 @@ class ApiHomeResponder
 			NestedTransaction transaction =
 				parentTransaction.nestTransaction (
 					logContext,
-					"goHeaders");
+					"headers");
 
 		) {
 
@@ -57,18 +68,16 @@ class ApiHomeResponder
 
 	@Override
 	protected
-	void goContent (
-			@NonNull Transaction parentTransaction) {
+	void render (
+			@NonNull Transaction parentTransaction,
+			@NonNull FormatWriter formatWriter) {
 
 		try (
 
 			NestedTransaction transaction =
 				parentTransaction.nestTransaction (
 					logContext,
-					"goContent");
-
-			FormatWriter formatWriter =
-				requestContext.formatWriter ();
+					"render");
 
 		) {
 
