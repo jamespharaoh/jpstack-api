@@ -23,7 +23,7 @@ import wbs.utils.string.FormatWriter;
 import wbs.utils.string.WriterFormatWriter;
 
 import wbs.web.context.RequestContext;
-import wbs.web.handler.WebNotFoundHandler;
+import wbs.web.mvc.WebNotFoundHandler;
 
 @SingletonComponent ("apiNotFoundHandler")
 public

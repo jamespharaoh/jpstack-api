@@ -21,7 +21,7 @@ import wbs.framework.logging.TaskLogger;
 
 import wbs.web.context.RequestContext;
 import wbs.web.file.WebFile;
-import wbs.web.handler.RequestHandler;
+import wbs.web.mvc.WebRequestHandler;
 
 @Accessors (fluent = true)
 @PrototypeComponent ("apiResource")
@@ -40,7 +40,7 @@ class ApiResource
 	// properties
 
 	@Getter @Setter
-	Map <Method, RequestHandler> requestHandlers =
+	Map <Method, WebRequestHandler> requestHandlers =
 		new HashMap<> ();
 
 	// implementation
@@ -59,7 +59,7 @@ class ApiResource
 
 		) {
 
-			RequestHandler requestHandler =
+			WebRequestHandler requestHandler =
 				requestHandlers.get (
 					method);
 

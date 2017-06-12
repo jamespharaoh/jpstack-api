@@ -21,15 +21,15 @@ import wbs.framework.builder.annotations.BuilderSource;
 import wbs.framework.builder.annotations.BuilderTarget;
 import wbs.framework.component.annotations.ClassSingletonDependency;
 import wbs.framework.component.annotations.PrototypeComponent;
-import wbs.framework.component.annotations.PrototypeDependency;
 import wbs.framework.component.annotations.SingletonDependency;
+import wbs.framework.component.annotations.StrongPrototypeDependency;
 import wbs.framework.component.manager.ComponentManager;
 import wbs.framework.logging.LogContext;
 import wbs.framework.logging.OwnedTaskLogger;
 import wbs.framework.logging.TaskLogger;
 
-import wbs.web.action.ActionRequestHandler;
-import wbs.web.handler.RequestHandler;
+import wbs.web.mvc.WebActionRequestHandler;
+import wbs.web.mvc.WebRequestHandler;
 
 @PrototypeComponent ("apiPostActionBuilder")
 @ApiModuleBuilderHandler
@@ -47,8 +47,8 @@ class ApiPostActionBuilder
 
 	// prototype dependencies
 
-	@PrototypeDependency
-	Provider <ActionRequestHandler> actionRequestHandlerProvider;
+	@StrongPrototypeDependency
+	Provider <WebActionRequestHandler> actionRequestHandlerProvider;
 
 	// builder
 
@@ -87,7 +87,7 @@ class ApiPostActionBuilder
 
 			setDefaults ();
 
-			RequestHandler actionRequestHandler =
+			WebRequestHandler actionRequestHandler =
 				actionRequestHandlerProvider.get ()
 
 				.actionName (

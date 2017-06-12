@@ -20,14 +20,14 @@ import wbs.framework.logging.TaskLogger;
 import wbs.utils.io.RuntimeIoException;
 
 import wbs.web.context.RequestContext;
-import wbs.web.responder.Responder;
+import wbs.web.responder.WebResponder;
 
 @PrototypeComponent ("xmlResponder")
 public
 class XmlResponder
 	implements
-		Provider <Responder>,
-		Responder {
+		Provider <WebResponder>,
+		WebResponder {
 
 	// singleton dependencies
 
@@ -98,7 +98,7 @@ class XmlResponder
 
 	@Override
 	public
-	Responder get () {
+	WebResponder get () {
 		return this;
 	}
 

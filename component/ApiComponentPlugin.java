@@ -1,10 +1,18 @@
 package wbs.api.component;
 
 import static wbs.utils.collection.MapUtils.mapItemForKeyRequired;
+import static wbs.utils.etc.Misc.shouldNeverHappen;
 import static wbs.utils.etc.OptionalUtils.optionalOf;
+import static wbs.utils.etc.TypeUtils.classEqualSafe;
 import static wbs.utils.etc.TypeUtils.genericCastUnchecked;
 import static wbs.utils.string.StringUtils.hyphenToCamel;
 import static wbs.utils.string.StringUtils.stringFormat;
+
+import java.util.Set;
+
+import javax.inject.Provider;
+
+import com.google.common.collect.ImmutableSet;
 
 import lombok.NonNull;
 
@@ -12,6 +20,7 @@ import wbs.api.module.ApiModule;
 import wbs.api.module.ApiModuleFactory;
 import wbs.api.module.ApiModuleSpec;
 import wbs.api.module.ApiModuleSpecManager;
+import wbs.api.mvc.ApiAction;
 
 import wbs.framework.component.annotations.ClassSingletonDependency;
 import wbs.framework.component.annotations.SingletonComponent;
@@ -42,7 +51,7 @@ class ApiComponentPlugin
 	@SingletonDependency
 	PluginManager pluginManager;
 
-	// implementation
+	// public implementation
 
 	@Override
 	public

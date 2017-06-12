@@ -22,7 +22,7 @@ import wbs.framework.logging.OwnedTaskLogger;
 import wbs.framework.logging.TaskLogger;
 
 import wbs.web.context.RequestContext;
-import wbs.web.handler.WebExceptionHandler;
+import wbs.web.mvc.WebExceptionHandler;
 
 @SingletonComponent ("exceptionHandler")
 public
@@ -47,8 +47,9 @@ class ApiExceptionHandler
 
 	@Override
 	public
-	void handleException (
+	void handleExceptionRetry (
 			@NonNull TaskLogger parentTaskLogger,
+			@NonNull Long attempt,
 			@NonNull Throwable throwable) {
 
 		try (
@@ -60,14 +61,106 @@ class ApiExceptionHandler
 
 		) {
 
-			// log it the old fashioned way
+			// log via task logger
 
 			taskLogger.errorFormatException (
 				throwable,
 				"Error at %s",
 				requestContext.requestUri ());
 
-			// make an exception log of this calamity
+			// log via exception logger
+
+			try {
+
+				StringBuilder stringBuilder =
+					new StringBuilder ();
+
+				stringBuilder.append (
+					exceptionLogic.throwableDump (
+						taskLogger,
+						throwable));
+
+				stringBuilder.append (
+					"\n\nHTTP INFO\n\n");
+
+				stringBuilder.append (
+					stringFormat (
+						"METHOD = %s\n\n",
+						requestContext.method ()));
+
+				for (
+					Map.Entry<String,List<String>> entry
+						: requestContext.parameterMap ().entrySet ()
+				) {
+
+					for (
+						String value
+							: entry.getValue ()
+					) {
+
+						stringBuilder.append (
+							stringFormat (
+								"%s = \"%s\"\n",
+								entry.getKey (),
+								value));
+
+					}
+
+				}
+
+				exceptionLogger.logSimple (
+					taskLogger,
+					"webapi",
+					requestContext.requestUri (),
+					exceptionLogic.throwableSummary (
+						taskLogger,
+						throwable),
+					stringBuilder.toString (),
+					optionalAbsent (),
+						GenericExceptionResolution.tryAgainNow);
+
+			} catch (RuntimeException exception) {
+
+				taskLogger.fatalFormatException (
+					exception,
+					"Error creating exception log");
+
+			}
+
+			// set the error code
+
+			requestContext.status (
+				fromJavaInteger (
+					HttpServletResponse.SC_INTERNAL_SERVER_ERROR));
+
+		}
+
+	}
+
+	@Override
+	public
+	void handleExceptionFinal (
+			@NonNull TaskLogger parentTaskLogger,
+			@NonNull Long attempt,
+			@NonNull Throwable throwable) {
+
+		try (
+
+			OwnedTaskLogger taskLogger =
+				logContext.nestTaskLogger (
+					parentTaskLogger,
+					"handleException");
+
+		) {
+
+			// log it via task logger
+
+			taskLogger.errorFormatException (
+				throwable,
+				"Error at %s",
+				requestContext.requestUri ());
+
+			// log it via exception logger
 
 			try {
 

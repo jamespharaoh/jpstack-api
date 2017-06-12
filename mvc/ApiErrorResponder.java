@@ -14,12 +14,12 @@ import wbs.utils.string.FormatWriter;
 import wbs.utils.string.WriterFormatWriter;
 
 import wbs.web.context.RequestContext;
-import wbs.web.responder.Responder;
+import wbs.web.responder.WebResponder;
 
 @PrototypeComponent ("prototype")
 public
 class ApiErrorResponder
-	implements Responder {
+	implements WebResponder {
 
 	// dependencies
 

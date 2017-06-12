@@ -8,12 +8,15 @@ import javax.inject.Provider;
 
 import lombok.NonNull;
 
+import wbs.api.mvc.ApiFile;
+
 import wbs.framework.builder.Builder;
 import wbs.framework.builder.BuilderFactory;
 import wbs.framework.component.annotations.ClassSingletonDependency;
 import wbs.framework.component.annotations.NormalLifecycleSetup;
 import wbs.framework.component.annotations.PrototypeDependency;
 import wbs.framework.component.annotations.SingletonComponent;
+import wbs.framework.component.annotations.StrongPrototypeDependency;
 import wbs.framework.logging.LogContext;
 import wbs.framework.logging.OwnedTaskLogger;
 import wbs.framework.logging.TaskLogger;
@@ -29,6 +32,9 @@ class ApiModuleBuilder
 	LogContext logContext;
 
 	// prototype dependencies
+
+	@StrongPrototypeDependency
+	Provider <ApiFile> apiFile;
 
 	@PrototypeDependency
 	Provider <BuilderFactory <?, TaskLogger>> builderFactoryProvider;

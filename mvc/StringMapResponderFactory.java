@@ -2,12 +2,12 @@ package wbs.api.mvc;
 
 import java.util.Map;
 
-import wbs.web.responder.Responder;
+import wbs.web.responder.WebResponder;
 
 public
 interface StringMapResponderFactory {
 
-	Responder makeResponder (
+	WebResponder makeResponder (
 		Map<String,?> map);
 
 }

@@ -41,7 +41,7 @@ import wbs.framework.logging.OwnedTaskLogger;
 import wbs.framework.logging.TaskLogger;
 
 import wbs.web.file.WebFile;
-import wbs.web.handler.RequestHandler;
+import wbs.web.mvc.WebRequestHandler;
 import wbs.web.pathhandler.PathHandler;
 
 @Accessors (fluent = true)
@@ -84,7 +84,7 @@ class ApiModuleImplementation
 	Set <String> terminalResourceNames =
 		new HashSet<> ();
 
-	Map <Pair <String, Method>, RequestHandler> requestHandlers =
+	Map <Pair <String, Method>, WebRequestHandler> requestHandlers =
 		new HashMap<> ();
 
 	Map <String, String> variableResources =
@@ -133,7 +133,7 @@ class ApiModuleImplementation
 							terminalResourceName,
 							method);
 
-					RequestHandler requestHandler =
+					WebRequestHandler requestHandler =
 						requestHandlers.get (
 							key);
 
@@ -205,7 +205,7 @@ class ApiModuleImplementation
 	void addRequestHandler (
 			@NonNull String resourceName,
 			@NonNull Method method,
-			@NonNull RequestHandler requestHandler) {
+			@NonNull WebRequestHandler requestHandler) {
 
 		Pair <String, Method> key =
 			Pair.of (
