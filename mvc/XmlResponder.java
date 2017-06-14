@@ -1,8 +1,9 @@
 package wbs.api.mvc;
 
-import java.io.IOException;
+import static wbs.utils.etc.Misc.doNothing;
 
-import javax.inject.Provider;
+import java.io.IOException;
+import java.io.OutputStream;
 
 import lombok.NonNull;
 
@@ -13,21 +14,19 @@ import org.jdom2.output.XMLOutputter;
 import wbs.framework.component.annotations.ClassSingletonDependency;
 import wbs.framework.component.annotations.PrototypeComponent;
 import wbs.framework.component.annotations.SingletonDependency;
+import wbs.framework.database.NestedTransaction;
+import wbs.framework.database.Transaction;
 import wbs.framework.logging.LogContext;
-import wbs.framework.logging.OwnedTaskLogger;
-import wbs.framework.logging.TaskLogger;
 
 import wbs.utils.io.RuntimeIoException;
 
 import wbs.web.context.RequestContext;
-import wbs.web.responder.WebResponder;
+import wbs.web.responder.BufferedResponder;
 
 @PrototypeComponent ("xmlResponder")
 public
 class XmlResponder
-	implements
-		Provider <WebResponder>,
-		WebResponder {
+	extends BufferedResponder {
 
 	// singleton dependencies
 
@@ -59,25 +58,39 @@ class XmlResponder
 	}
 
 	@Override
-	public
-	void execute (
-			@NonNull TaskLogger parentTaskLogger) {
+	protected
+	void prepare (
+			@NonNull Transaction parentTransaction) {
 
 		try (
 
-			OwnedTaskLogger taskLogger =
-				logContext.nestTaskLogger (
-					parentTaskLogger,
-					"execute");
+			NestedTransaction transaction =
+				parentTransaction.nestTransaction (
+					logContext,
+					"prepare");
 
 		) {
 
-			requestContext.status (
-				status);
+			doNothing ();
 
-			requestContext.contentType (
-				"text/xml",
-				"utf-8");
+		}
+
+	}
+
+	@Override
+	protected
+	void render (
+			@NonNull Transaction parentTransaction,
+			@NonNull OutputStream outputStream) {
+
+		try (
+
+			NestedTransaction transaction =
+				parentTransaction.nestTransaction (
+					logContext,
+					"render");
+
+		) {
 
 			XMLOutputter xmlOutputter =
 				new XMLOutputter (
@@ -85,7 +98,7 @@ class XmlResponder
 
 			xmlOutputter.output (
 				xmlDocument,
-				requestContext.outputStream ());
+				outputStream);
 
 		} catch (IOException ioException) {
 
@@ -97,9 +110,28 @@ class XmlResponder
 	}
 
 	@Override
-	public
-	WebResponder get () {
-		return this;
+	protected
+	void headers (
+			@NonNull Transaction parentTransaction) {
+
+		try (
+
+			NestedTransaction transaction =
+				parentTransaction.nestTransaction (
+					logContext,
+					"headers");
+
+		) {
+
+			requestContext.status (
+				status);
+
+			requestContext.contentType (
+				"text/xml",
+				"utf-8");
+
+		}
+
 	}
 
 }
