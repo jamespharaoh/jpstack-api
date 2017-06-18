@@ -29,6 +29,7 @@ import wbs.framework.component.annotations.ComponentInterface;
 import wbs.framework.component.annotations.PrototypeDependency;
 import wbs.framework.component.annotations.SingletonComponent;
 import wbs.framework.component.annotations.SingletonDependency;
+import wbs.framework.component.manager.ComponentProvider;
 import wbs.framework.component.scaffold.PluginApiModuleSpec;
 import wbs.framework.component.scaffold.PluginManager;
 import wbs.framework.component.scaffold.PluginSpec;
@@ -57,7 +58,7 @@ class ApiModuleSpecManagerFactory
 	// prototype dependencies
 
 	@PrototypeDependency
-	Map <Class <?>, Provider <ApiSpec>> apiSpecProviders;
+	Map <Class <?>, ComponentProvider <ApiSpec>> apiSpecProviders;
 
 	@PrototypeDependency
 	Provider <DataFromXmlBuilder> dataFromXmlBuilderProvider;
@@ -92,9 +93,13 @@ class ApiModuleSpecManagerFactory
 				dataFromXmlBuilderProvider.get ()
 
 				.registerBuilders (
+					taskLogger,
 					apiSpecProviders)
 
-				.build ();
+				.build (
+					taskLogger)
+
+			;
 
 			pluginManager.plugins ().forEach (
 				pluginSpec ->

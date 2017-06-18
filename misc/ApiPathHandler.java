@@ -1,13 +1,12 @@
 package wbs.api.misc;
 
-import javax.inject.Provider;
-
 import lombok.NonNull;
 
 import wbs.framework.component.annotations.ClassSingletonDependency;
 import wbs.framework.component.annotations.HiddenComponent;
 import wbs.framework.component.annotations.SingletonComponent;
 import wbs.framework.component.annotations.UninitializedDependency;
+import wbs.framework.component.manager.ComponentProvider;
 import wbs.framework.component.tools.ComponentFactory;
 import wbs.framework.logging.LogContext;
 import wbs.framework.logging.OwnedTaskLogger;
@@ -29,7 +28,7 @@ class ApiPathHandler
 	// uninitialized dependencies
 
 	@UninitializedDependency
-	Provider <DelegatingPathHandler> delegatingPathHandlerProvider;
+	ComponentProvider <DelegatingPathHandler> delegatingPathHandlerProvider;
 
 	// implementation
 
@@ -47,7 +46,8 @@ class ApiPathHandler
 
 		) {
 
-			return delegatingPathHandlerProvider.get ();
+			return delegatingPathHandlerProvider.provide (
+				taskLogger);
 
 		}
 

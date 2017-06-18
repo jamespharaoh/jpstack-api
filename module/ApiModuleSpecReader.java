@@ -11,6 +11,7 @@ import wbs.framework.component.annotations.ClassSingletonDependency;
 import wbs.framework.component.annotations.NormalLifecycleSetup;
 import wbs.framework.component.annotations.PrototypeDependency;
 import wbs.framework.component.annotations.SingletonComponent;
+import wbs.framework.component.manager.ComponentProvider;
 import wbs.framework.data.tools.DataFromXml;
 import wbs.framework.data.tools.DataFromXmlBuilder;
 import wbs.framework.logging.LogContext;
@@ -30,7 +31,7 @@ class ApiModuleSpecReader {
 	// prototype dependencies
 
 	@PrototypeDependency
-	Map <Class <?>, Provider <ApiModuleSpec>> apiModuleSpecProviders;
+	Map <Class <?>, ComponentProvider <ApiModuleSpec>> apiModuleSpecProviders;
 
 	@PrototypeDependency
 	Provider <DataFromXmlBuilder> dataFromXmlBuilderProvider;
@@ -59,9 +60,13 @@ class ApiModuleSpecReader {
 				dataFromXmlBuilderProvider.get ()
 
 				.registerBuilders (
+					taskLogger,
 					apiModuleSpecProviders)
 
-				.build ();
+				.build (
+					taskLogger)
+
+			;
 
 		}
 

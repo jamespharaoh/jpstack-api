@@ -2,8 +2,6 @@ package wbs.api.module;
 
 import static wbs.utils.string.StringUtils.hyphenToCamel;
 
-import javax.inject.Provider;
-
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -15,6 +13,7 @@ import wbs.framework.component.annotations.ClassSingletonDependency;
 import wbs.framework.component.annotations.NamedDependency;
 import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.component.annotations.UninitializedDependency;
+import wbs.framework.component.manager.ComponentProvider;
 import wbs.framework.component.tools.ComponentFactory;
 import wbs.framework.logging.LogContext;
 import wbs.framework.logging.OwnedTaskLogger;
@@ -37,7 +36,7 @@ class ApiModuleFactory
 	// unitialized dependencies
 
 	@UninitializedDependency
-	Provider <ApiModuleImplementation> apiModuleImplementationProvider;
+	ComponentProvider <ApiModuleImplementation> apiModuleImplementationProvider;
 
 	// properties
 
@@ -61,7 +60,8 @@ class ApiModuleFactory
 		) {
 
 			ApiModuleImplementation apiModule =
-				apiModuleImplementationProvider.get ();
+				apiModuleImplementationProvider.provide (
+					taskLogger);
 
 			apiModuleBuilder.descend (
 				taskLogger,

@@ -1,12 +1,11 @@
 package wbs.api.misc;
 
-import javax.inject.Provider;
-
 import lombok.NonNull;
 
 import wbs.framework.component.annotations.ClassSingletonDependency;
 import wbs.framework.component.annotations.SingletonComponent;
 import wbs.framework.component.annotations.UninitializedDependency;
+import wbs.framework.component.manager.ComponentProvider;
 import wbs.framework.component.tools.ComponentFactory;
 import wbs.framework.logging.LogContext;
 import wbs.framework.logging.OwnedTaskLogger;
@@ -28,7 +27,8 @@ class ApiThreadManager
 	// uninitialized dependencies
 
 	@UninitializedDependency
-	Provider <ThreadManagerImplementation> threadManagerImplementationProvider;
+	ComponentProvider <ThreadManagerImplementation>
+		threadManagerImplementationProvider;
 
 	// components
 
@@ -46,10 +46,13 @@ class ApiThreadManager
 
 		) {
 
-			return threadManagerImplementationProvider.get ()
+			return threadManagerImplementationProvider.provide (
+				taskLogger)
 
 				.exceptionTypeCode (
-					"webapi");
+					"webapi")
+
+			;
 
 		}
 

@@ -2,8 +2,6 @@ package wbs.api.misc;
 
 import java.util.Map;
 
-import javax.inject.Provider;
-
 import com.google.common.collect.ImmutableMap;
 
 import lombok.NonNull;
@@ -16,6 +14,7 @@ import wbs.framework.component.annotations.NormalLifecycleSetup;
 import wbs.framework.component.annotations.PrototypeDependency;
 import wbs.framework.component.annotations.SingletonComponent;
 import wbs.framework.component.annotations.StrongPrototypeDependency;
+import wbs.framework.component.manager.ComponentProvider;
 import wbs.framework.logging.LogContext;
 import wbs.framework.logging.OwnedTaskLogger;
 import wbs.framework.logging.TaskLogger;
@@ -35,10 +34,10 @@ class ApiCoreModule
 	// prototype dependencies
 
 	@StrongPrototypeDependency
-	Provider <ApiFile> apiFileProvider;
+	ComponentProvider <ApiFile> apiFileProvider;
 
 	@PrototypeDependency
-	Provider <ApiHomeResponder> apiHomeResponderProvider;
+	ComponentProvider <ApiHomeResponder> apiHomeResponderProvider;
 
 	// state
 
@@ -73,7 +72,8 @@ class ApiCoreModule
 
 				.put (
 					"",
-					apiFileProvider.get ()
+					apiFileProvider.provide (
+						taskLogger)
 
 					.getResponderProvider (
 						apiHomeResponderProvider)

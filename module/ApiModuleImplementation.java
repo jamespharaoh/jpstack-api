@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.inject.Provider;
-
 import com.google.common.collect.ImmutableMap;
 
 import lombok.Getter;
@@ -34,6 +32,7 @@ import wbs.framework.component.annotations.PrototypeComponent;
 import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.component.annotations.StrongPrototypeDependency;
 import wbs.framework.component.manager.ComponentManager;
+import wbs.framework.component.manager.ComponentProvider;
 import wbs.framework.data.annotations.DataChildren;
 import wbs.framework.data.annotations.DataClass;
 import wbs.framework.logging.LogContext;
@@ -62,10 +61,10 @@ class ApiModuleImplementation
 	// prototype dependencies
 
 	@StrongPrototypeDependency
-	Provider <ApiResource> apiResourceProvider;
+	ComponentProvider <ApiResource> apiResourceProvider;
 
 	@StrongPrototypeDependency
-	Provider <ApiVariable> apiVariableProvider;
+	ComponentProvider <ApiVariable> apiVariableProvider;
 
 	// properties
 
@@ -121,7 +120,8 @@ class ApiModuleImplementation
 			) {
 
 				ApiResource resource =
-					apiResourceProvider.get ();
+					apiResourceProvider.provide (
+						taskLogger);
 
 				for (
 					Method method
@@ -171,7 +171,8 @@ class ApiModuleImplementation
 						variableResourceName);
 
 				ApiVariable variable =
-					apiVariableProvider.get ()
+					apiVariableProvider.provide (
+						taskLogger)
 
 					.resourceName (
 						variableResourceName)
