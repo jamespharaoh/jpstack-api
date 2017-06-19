@@ -2,8 +2,6 @@ package wbs.api.resource;
 
 import static wbs.utils.string.StringUtils.stringFormat;
 
-import javax.inject.Provider;
-
 import lombok.NonNull;
 
 import wbs.api.module.ApiModuleBuilderHandler;
@@ -21,6 +19,7 @@ import wbs.framework.builder.annotations.BuilderTarget;
 import wbs.framework.component.annotations.ClassSingletonDependency;
 import wbs.framework.component.annotations.PrototypeComponent;
 import wbs.framework.component.annotations.PrototypeDependency;
+import wbs.framework.component.manager.ComponentProvider;
 import wbs.framework.logging.LogContext;
 import wbs.framework.logging.OwnedTaskLogger;
 import wbs.framework.logging.TaskLogger;
@@ -39,8 +38,8 @@ class ApiVariableBuilder
 	// prototype dependencies
 
 	@PrototypeDependency
-	Provider <SimpleApiBuilderContainerImplementation>
-	simpleApiBuilderContainerImplementation;
+	ComponentProvider <SimpleApiBuilderContainerImplementation>
+		simpleApiBuilderContainerImplementation;
 
 	// builder
 
@@ -78,7 +77,9 @@ class ApiVariableBuilder
 		) {
 
 			setDefaults ();
-			initContainers ();
+
+			initContainers (
+				taskLogger);
 
 			apiModule.addVariable (
 				container.resourceName (),
@@ -108,19 +109,32 @@ class ApiVariableBuilder
 
 	}
 
-	void initContainers () {
+	void initContainers (
+			@NonNull TaskLogger parentTaskLogger) {
 
-		childContainer =
-			simpleApiBuilderContainerImplementation.get ()
+		try (
 
-			.newBeanNamePrefix (
-				container.newBeanNamePrefix ())
+			OwnedTaskLogger taskLogger =
+				logContext.nestTaskLogger (
+					parentTaskLogger,
+					"initContainers");
 
-			.existingBeanNamePrefix (
-				container.existingBeanNamePrefix ())
+		) {
 
-			.resourceName (
-				resourceName);
+			childContainer =
+				simpleApiBuilderContainerImplementation.provide (
+					taskLogger)
+
+				.newBeanNamePrefix (
+					container.newBeanNamePrefix ())
+
+				.existingBeanNamePrefix (
+					container.existingBeanNamePrefix ())
+
+				.resourceName (
+					resourceName);
+
+		}
 
 	}
 

@@ -4,8 +4,6 @@ import static wbs.utils.etc.OptionalUtils.optionalOf;
 import static wbs.utils.etc.OptionalUtils.optionalOrElseRequired;
 import static wbs.utils.etc.OptionalUtils.optionalOrNull;
 
-import javax.inject.Provider;
-
 import com.google.common.base.Optional;
 
 import lombok.Getter;
@@ -17,6 +15,7 @@ import wbs.framework.component.annotations.ClassSingletonDependency;
 import wbs.framework.component.annotations.NormalLifecycleSetup;
 import wbs.framework.component.annotations.PrototypeComponent;
 import wbs.framework.component.annotations.PrototypeDependency;
+import wbs.framework.component.manager.ComponentProvider;
 import wbs.framework.logging.LogContext;
 import wbs.framework.logging.OwnedTaskLogger;
 import wbs.framework.logging.TaskLogger;
@@ -38,12 +37,12 @@ class ApiActionWrapper
 	// prototype dependencies
 
 	@PrototypeDependency
-	Provider <ApiErrorResponder> errorResponder;
+	ComponentProvider <ApiErrorResponder> errorResponder;
 
 	// properties
 
 	@Getter @Setter
-	Provider <ApiAction> apiActionProvider;
+	ComponentProvider <ApiAction> apiActionProvider;
 
 	// state
 
@@ -66,7 +65,8 @@ class ApiActionWrapper
 		) {
 
 			apiAction =
-				apiActionProvider.get ();
+				apiActionProvider.provide (
+					taskLogger);
 
 		}
 
@@ -92,7 +92,8 @@ class ApiActionWrapper
 				optionalOrElseRequired (
 					apiAction.defaultResponder (
 						taskLogger),
-					() -> errorResponder.get ()));
+					() -> errorResponder.provide (
+						taskLogger)));
 
 		}
 

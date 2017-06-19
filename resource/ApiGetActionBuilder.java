@@ -4,8 +4,6 @@ import static wbs.utils.etc.NullUtils.ifNull;
 import static wbs.utils.string.StringUtils.capitalise;
 import static wbs.utils.string.StringUtils.joinWithoutSeparator;
 
-import javax.inject.Provider;
-
 import lombok.NonNull;
 
 import wbs.api.module.ApiModuleBuilderHandler;
@@ -24,6 +22,7 @@ import wbs.framework.component.annotations.PrototypeComponent;
 import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.component.annotations.StrongPrototypeDependency;
 import wbs.framework.component.manager.ComponentManager;
+import wbs.framework.component.manager.ComponentProvider;
 import wbs.framework.logging.LogContext;
 import wbs.framework.logging.OwnedTaskLogger;
 import wbs.framework.logging.TaskLogger;
@@ -48,7 +47,7 @@ class ApiGetActionBuilder
 	// prototype dependencies
 
 	@StrongPrototypeDependency
-	Provider <WebActionRequestHandler> actionRequestHandlerProvider;
+	ComponentProvider <WebActionRequestHandler> actionRequestHandlerProvider;
 
 	// builder
 
@@ -88,7 +87,8 @@ class ApiGetActionBuilder
 			setDefaults ();
 
 			WebRequestHandler actionRequestHandler =
-				actionRequestHandlerProvider.get ()
+				actionRequestHandlerProvider.provide (
+					taskLogger)
 
 				.actionName (
 					taskLogger,

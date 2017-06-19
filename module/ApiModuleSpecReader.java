@@ -2,8 +2,6 @@ package wbs.api.module;
 
 import java.util.Map;
 
-import javax.inject.Provider;
-
 import lombok.NonNull;
 import lombok.experimental.Accessors;
 
@@ -34,7 +32,7 @@ class ApiModuleSpecReader {
 	Map <Class <?>, ComponentProvider <ApiModuleSpec>> apiModuleSpecProviders;
 
 	@PrototypeDependency
-	Provider <DataFromXmlBuilder> dataFromXmlBuilderProvider;
+	ComponentProvider <DataFromXmlBuilder> dataFromXmlBuilderProvider;
 
 	// state
 
@@ -57,7 +55,8 @@ class ApiModuleSpecReader {
 		) {
 
 			dataFromXml =
-				dataFromXmlBuilderProvider.get ()
+				dataFromXmlBuilderProvider.provide (
+					taskLogger)
 
 				.registerBuilders (
 					taskLogger,
