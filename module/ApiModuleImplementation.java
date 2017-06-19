@@ -268,4 +268,22 @@ class ApiModuleImplementation
 
 	}
 
+	@Override
+	public
+	Map <String, PathHandler> webModulePaths (
+			@NonNull TaskLogger parentTaskLogger) {
+
+		return paths;
+
+	}
+
+	@Override
+	public
+	Map <String, WebFile> webModuleFiles (
+			@NonNull TaskLogger parentTaskLogger) {
+
+		return files;
+
+	}
+
 }

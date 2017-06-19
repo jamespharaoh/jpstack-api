@@ -3,8 +3,6 @@ package wbs.api.mvc;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import javax.inject.Provider;
-
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -15,6 +13,7 @@ import wbs.framework.component.annotations.PrototypeComponent;
 import wbs.framework.component.annotations.SingletonDependency;
 import wbs.framework.component.annotations.StrongPrototypeDependency;
 import wbs.framework.component.manager.ComponentManager;
+import wbs.framework.component.manager.ComponentProvider;
 import wbs.framework.logging.LogContext;
 import wbs.framework.logging.OwnedTaskLogger;
 import wbs.framework.logging.TaskLogger;
@@ -43,21 +42,22 @@ class ApiFile
 	// prototype dependencies
 
 	@StrongPrototypeDependency
-	Provider <WebActionRequestHandler> actionRequestHandlerProvider;
+	ComponentProvider <WebActionRequestHandler> actionRequestHandlerProvider;
 
 	@StrongPrototypeDependency
-	Provider <WebResponderRequestHandler> responderRequestHandlerProvider;
+	ComponentProvider <WebResponderRequestHandler>
+		responderRequestHandlerProvider;
 
 	// properties
 
 	@Getter @Setter
-	Provider <WebRequestHandler> headHandlerProvider;
+	ComponentProvider <WebRequestHandler> headHandlerProvider;
 
 	@Getter @Setter
-	Provider <WebRequestHandler> getHandlerProvider;
+	ComponentProvider <WebRequestHandler> getHandlerProvider;
 
 	@Getter @Setter
-	Provider <WebRequestHandler> postHandlerProvider;
+	ComponentProvider <WebRequestHandler> postHandlerProvider;
 
 	@Getter @Setter
 	Map <String, Object> requestParams =
@@ -67,10 +67,12 @@ class ApiFile
 
 	public
 	ApiFile getActionProvider (
-			Provider <WebAction> actionProvider) {
+			ComponentProvider <WebAction> actionProvider) {
 
 		return getHandlerProvider (
-			() -> actionRequestHandlerProvider.get ()
+			taskLogger ->
+				actionRequestHandlerProvider.provide (
+					taskLogger)
 
 			.actionProvider (
 				actionProvider)
@@ -84,21 +86,23 @@ class ApiFile
 			@NonNull TaskLogger parentTaskLogger,
 			@NonNull String actionName) {
 
-		return getHandlerProvider (
-			() -> actionRequestHandlerProvider.get ()
-
-			.actionName (
+		return getActionProvider (
+			componentManager.getComponentProviderRequired (
 				parentTaskLogger,
-				actionName));
+				actionName,
+				WebAction.class));
 
 	}
 
 	public
 	ApiFile getResponderProvider (
-			@NonNull Provider <? extends WebResponder> responderProvider) {
+			@NonNull ComponentProvider <? extends WebResponder>
+				responderProvider) {
 
 		return getHandlerProvider (
-			() -> responderRequestHandlerProvider.get ()
+			taskLogger ->
+				responderRequestHandlerProvider.provide (
+					taskLogger)
 
 			.responderProvider (
 				responderProvider)
@@ -121,16 +125,14 @@ class ApiFile
 
 		) {
 
-			return getHandlerProvider (
-				() -> responderRequestHandlerProvider.get ()
+			ComponentProvider <WebResponder> responderProvider =
+				componentManager.getComponentProviderRequired (
+					parentTaskLogger,
+					beanName,
+					WebResponder.class);
 
-				.responderProvider (
-					componentManager.getComponentProviderRequired (
-						parentTaskLogger,
-						beanName,
-						WebResponder.class))
-
-			);
+			return getResponderProvider (
+				responderProvider);
 
 		}
 
@@ -138,10 +140,12 @@ class ApiFile
 
 	public
 	ApiFile postActionProvider (
-			Provider <WebAction> actionProvider) {
+			ComponentProvider <WebAction> actionProvider) {
 
 		return postHandlerProvider (
-			() -> actionRequestHandlerProvider.get ()
+			taskLogger ->
+				actionRequestHandlerProvider.provide (
+					taskLogger)
 
 			.actionProvider (
 				actionProvider)

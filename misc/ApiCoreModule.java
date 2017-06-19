@@ -47,8 +47,11 @@ class ApiCoreModule
 
 	@Override
 	public
-	Map <String, WebFile> files () {
+	Map <String, WebFile> webModuleFiles (
+			@NonNull TaskLogger parentTaskLogger) {
+
 		return files;
+
 	}
 
 	// life cycle
