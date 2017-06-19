@@ -70,9 +70,9 @@ class ApiFile
 			ComponentProvider <WebAction> actionProvider) {
 
 		return getHandlerProvider (
-			taskLogger ->
+			taskLoggerNested ->
 				actionRequestHandlerProvider.provide (
-					taskLogger)
+					taskLoggerNested)
 
 			.actionProvider (
 				actionProvider)
@@ -100,9 +100,9 @@ class ApiFile
 				responderProvider) {
 
 		return getHandlerProvider (
-			taskLogger ->
+			taskLoggerNested ->
 				responderRequestHandlerProvider.provide (
-					taskLogger)
+					taskLoggerNested)
 
 			.responderProvider (
 				responderProvider)
@@ -143,9 +143,9 @@ class ApiFile
 			ComponentProvider <WebAction> actionProvider) {
 
 		return postHandlerProvider (
-			taskLogger ->
+			taskLoggerNested ->
 				actionRequestHandlerProvider.provide (
-					taskLogger)
+					taskLoggerNested)
 
 			.actionProvider (
 				actionProvider)
