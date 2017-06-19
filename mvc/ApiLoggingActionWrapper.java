@@ -6,17 +6,17 @@ import static wbs.utils.etc.OptionalUtils.optionalOf;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Provider;
-
 import com.google.common.base.Optional;
 
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import wbs.framework.component.annotations.ClassSingletonDependency;
 import wbs.framework.component.annotations.PrototypeDependency;
 import wbs.framework.component.annotations.SingletonDependency;
+import wbs.framework.component.manager.ComponentProvider;
 import wbs.framework.exception.ExceptionUtils;
 import wbs.framework.logging.LogContext;
 import wbs.framework.logging.OwnedTaskLogger;
@@ -29,6 +29,7 @@ import wbs.web.context.RequestContext;
 import wbs.web.mvc.WebAction;
 import wbs.web.responder.WebResponder;
 
+@Accessors (fluent = true)
 public final
 class ApiLoggingActionWrapper
 	implements WebAction {
@@ -47,12 +48,12 @@ class ApiLoggingActionWrapper
 	// prototype dependencies
 
 	@PrototypeDependency
-	Provider <ApiErrorResponder> errorResponderProvider;
+	ComponentProvider <ApiErrorResponder> errorResponderProvider;
 
 	// properties
 
 	@Getter @Setter
-	Provider <ApiLoggingAction> apiLoggingActionProvider;
+	ComponentProvider <ApiLoggingAction> apiLoggingActionProvider;
 
 	// state
 
@@ -78,7 +79,8 @@ class ApiLoggingActionWrapper
 		) {
 
 			return optionalOf (
-				errorResponderProvider.get ());
+				errorResponderProvider.provide (
+					taskLogger));
 
 		}
 
@@ -99,7 +101,8 @@ class ApiLoggingActionWrapper
 		) {
 
 			apiLoggingAction =
-				apiLoggingActionProvider.get ();
+				apiLoggingActionProvider.provide (
+					taskLogger);
 
 			try {
 
