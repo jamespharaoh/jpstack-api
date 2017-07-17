@@ -12,7 +12,7 @@ import wbs.framework.builder.Builder.MissingBuilderBehaviour;
 import wbs.framework.component.annotations.ClassSingletonDependency;
 import wbs.framework.component.annotations.NamedDependency;
 import wbs.framework.component.annotations.SingletonDependency;
-import wbs.framework.component.annotations.UninitializedDependency;
+import wbs.framework.component.annotations.StrongPrototypeDependency;
 import wbs.framework.component.manager.ComponentProvider;
 import wbs.framework.component.tools.ComponentFactory;
 import wbs.framework.logging.LogContext;
@@ -24,7 +24,7 @@ public
 class ApiModuleFactory
 	implements ComponentFactory <ApiModuleImplementation> {
 
-	// dependencies
+	// singleton dependencies
 
 	@SingletonDependency
 	@NamedDependency
@@ -33,10 +33,10 @@ class ApiModuleFactory
 	@ClassSingletonDependency
 	LogContext logContext;
 
-	// unitialized dependencies
+	// prototype dependencies
 
-	@UninitializedDependency
-	ComponentProvider <ApiModuleImplementation> apiModuleImplementationProvider;
+	@StrongPrototypeDependency
+	ComponentProvider <ApiModuleImplementation> apiModuleProvider;
 
 	// properties
 
@@ -59,18 +59,18 @@ class ApiModuleFactory
 
 		) {
 
-			ApiModuleImplementation apiModule =
-				apiModuleImplementationProvider.provide (
-					taskLogger);
-
-			apiModuleBuilder.descend (
+			return apiModuleProvider.provide (
 				taskLogger,
-				simpleContainerSpec,
-				apiModuleSpec.builders (),
-				apiModule,
-				MissingBuilderBehaviour.error);
+				apiModule -> {
 
-			return apiModule;
+				apiModuleBuilder.descend (
+					taskLogger,
+					simpleContainerSpec,
+					apiModuleSpec.builders (),
+					apiModule,
+					MissingBuilderBehaviour.error);
+
+			});
 
 		}
 

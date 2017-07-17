@@ -5,7 +5,7 @@ import lombok.NonNull;
 import wbs.framework.component.annotations.ClassSingletonDependency;
 import wbs.framework.component.annotations.HiddenComponent;
 import wbs.framework.component.annotations.SingletonComponent;
-import wbs.framework.component.annotations.UninitializedDependency;
+import wbs.framework.component.annotations.StrongPrototypeDependency;
 import wbs.framework.component.manager.ComponentProvider;
 import wbs.framework.component.tools.ComponentFactory;
 import wbs.framework.logging.LogContext;
@@ -25,9 +25,9 @@ class ApiPathHandler
 	@ClassSingletonDependency
 	LogContext logContext;
 
-	// uninitialized dependencies
+	// prototype dependencies
 
-	@UninitializedDependency
+	@StrongPrototypeDependency
 	ComponentProvider <DelegatingPathHandler> delegatingPathHandlerProvider;
 
 	// implementation
